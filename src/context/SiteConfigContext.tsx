@@ -180,7 +180,7 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
   branding: {
     brandName: 'Biddaloi',
     tagline: 'Bangladesh’s Premier Study Abroad Platform',
-    logoUrl: '/biddaloiLogo.png',
+    logoUrl: 'https://www.biddaloi.com/biddaloiLogo.png',
     logoHeight: 28,
     logoAlt: 'Biddaloi Study Abroad Logo'
   },

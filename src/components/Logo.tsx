@@ -40,23 +40,41 @@ export const Logo: React.FC<LogoProps> = ({
     lg: 'max-h-[36px]',
   }[size];
 
-  // Check custom logo or default to official /biddaloiLogo.png
-  const activeLogoUrl = (config.branding.logoUrl && config.branding.logoUrl.trim() !== '')
+  // Primary logo URL: prioritize user custom config, or default to official https://www.biddaloi.com/biddaloiLogo.png
+  const primaryLogoUrl = (config.branding.logoUrl && config.branding.logoUrl.trim() !== '')
     ? config.branding.logoUrl
-    : '/biddaloiLogo.png';
+    : 'https://www.biddaloi.com/biddaloiLogo.png';
+
+  const [imgSrc, setImgSrc] = useState<string>(primaryLogoUrl);
+  const [hasError, setHasError] = useState(false);
+
+  // Sync if config changes
+  React.useEffect(() => {
+    setImgSrc(primaryLogoUrl);
+    setHasError(false);
+  }, [primaryLogoUrl]);
+
+  const handleImageError = () => {
+    // If the remote URL fails, fallback to bundled local /biddaloiLogo.png
+    if (imgSrc !== '/biddaloiLogo.png') {
+      setImgSrc('/biddaloiLogo.png');
+    } else {
+      setHasError(true);
+    }
+  };
 
   // If a logo is available and has not failed to load
-  if (activeLogoUrl && !imageError) {
+  if (imgSrc && !hasError) {
     return (
       <div className={`inline-flex items-center ${className}`}>
         <img
-          src={activeLogoUrl}
+          src={imgSrc}
           alt={config.branding.logoAlt || config.branding.brandName || 'Biddaloi'}
           style={{ height: `${computedHeight}px` }}
           className={`w-auto max-w-[170px] object-contain transition-all ${maxHeightClass} ${
             isLight ? 'brightness-0 invert' : ''
           }`}
-          onError={() => setImageError(true)}
+          onError={handleImageError}
         />
       </div>
     );

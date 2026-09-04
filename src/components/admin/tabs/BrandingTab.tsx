@@ -206,7 +206,7 @@ export const BrandingTab: React.FC = () => {
           <div className="flex gap-2">
             <input
               type="url"
-              placeholder="https://example.com/logo.png"
+              placeholder="https://www.biddaloi.com/biddaloiLogo.png"
               value={config.branding.logoUrl}
               onChange={(e) => updateSection('branding', { logoUrl: e.target.value })}
               className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
