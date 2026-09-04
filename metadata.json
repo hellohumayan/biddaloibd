@@ -1,0 +1,6 @@
+{
+  "name": "Biddaloi - Study Abroad & Global Education Platform",
+  "description": "Discover universities, courses, and scholarships for Bangladeshi students with trusted counseling and application guidance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

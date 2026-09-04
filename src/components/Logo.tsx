@@ -1,0 +1,69 @@
+import React, { useState } from 'react';
+import { useSiteConfig } from '../context/SiteConfigContext';
+
+interface LogoProps {
+  variant?: 'light' | 'dark';
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export const Logo: React.FC<LogoProps> = ({ 
+  variant = 'dark', 
+  className = '',
+  size = 'md',
+}) => {
+  const { config } = useSiteConfig();
+  const [imageError, setImageError] = useState(false);
+  const isLight = variant === 'light';
+
+  // Scaled down text size to maintain a refined, modern, and perfectly proportioned header
+  const sizeClasses = {
+    sm: 'text-base sm:text-lg',
+    md: 'text-lg sm:text-[21px]',
+    lg: 'text-xl sm:text-2xl',
+  }[size];
+
+  const scaleMultiplier = {
+    sm: 0.8,
+    md: 0.95,
+    lg: 1.15
+  }[size];
+
+  // Default logo height calibrated for header perfection (28px)
+  const configuredHeight = config.branding.logoHeight || 28;
+  const computedHeight = Math.round(configuredHeight * scaleMultiplier);
+
+  // Max height bounds per size to maintain ideal header proportions
+  const maxHeightClass = {
+    sm: 'max-h-[22px]',
+    md: 'max-h-[28px] sm:max-h-[30px]',
+    lg: 'max-h-[36px]',
+  }[size];
+
+  // If a custom logo was uploaded and has not failed to load
+  if (config.branding.logoUrl && !imageError) {
+    return (
+      <div className={`inline-flex items-center ${className}`}>
+        <img
+          src={config.branding.logoUrl}
+          alt={config.branding.logoAlt || config.branding.brandName}
+          style={{ height: `${computedHeight}px` }}
+          className={`w-auto max-w-[170px] object-contain transition-all ${maxHeightClass} ${
+            isLight ? 'brightness-0 invert' : ''
+          }`}
+          onError={() => setImageError(true)}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <span
+      className={`font-black tracking-tight select-none leading-none inline-block ${
+        isLight ? 'text-white' : 'text-[#020359]'
+      } ${sizeClasses} ${className}`}
+    >
+      {config.branding.brandName || 'Biddaloi'}
+    </span>
+  );
+};
