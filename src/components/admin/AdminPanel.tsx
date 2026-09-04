@@ -10,6 +10,7 @@ import { HowItWorksTab } from './tabs/HowItWorksTab';
 import { LiveClassesTab } from './tabs/LiveClassesTab';
 import { TestimonialsTab } from './tabs/TestimonialsTab';
 import { BackupResetTab } from './tabs/BackupResetTab';
+import { AdminLogin } from './AdminLogin';
 
 import { 
   Palette, 
@@ -26,7 +27,8 @@ import {
   Menu,
   X,
   ShieldCheck,
-  Eye
+  Eye,
+  LogOut
 } from 'lucide-react';
 
 interface AdminPanelProps {
@@ -46,9 +48,28 @@ type TabType =
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
   const { config } = useSiteConfig();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    try {
+      return sessionStorage.getItem('biddaloi_admin_auth') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
   const [activeTab, setActiveTab] = useState<TabType>('branding');
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [showSavedToast, setShowSavedToast] = useState(false);
+
+  const handleLogout = () => {
+    try {
+      sessionStorage.removeItem('biddaloi_admin_auth');
+    } catch {}
+    setIsAuthenticated(false);
+  };
+
+  if (!isAuthenticated) {
+    return <AdminLogin onSuccess={() => setIsAuthenticated(true)} onExit={onExit} />;
+  }
 
   const tabs = [
     { id: 'branding' as TabType, label: 'Logo & Branding', icon: Palette, badge: config.branding.logoUrl ? 'Custom Logo' : undefined },
@@ -59,7 +80,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
     { id: 'howItWorks' as TabType, label: 'Road to Abroad', icon: Route },
     { id: 'liveClasses' as TabType, label: 'Live Classes & Videos', icon: Tv, count: config.liveClasses?.classes?.length },
     { id: 'testimonials' as TabType, label: 'Student Stories', icon: MessageSquareQuote, count: config.testimonials?.items?.length },
-    { id: 'backup' as TabType, label: 'Backup & Reset', icon: Database },
+    { id: 'backup' as TabType, label: 'Security & Backup', icon: Database },
   ];
 
   // Trigger brief saved feedback whenever user modifies things
@@ -106,6 +127,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                 <span>Changes saved to site</span>
               </div>
             )}
+
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-700 text-xs font-semibold transition-all border border-slate-200 hover:border-red-200 cursor-pointer"
+              title="Lock Admin Studio & Log Out"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Log Out</span>
+            </button>
 
             <button
               onClick={onExit}
@@ -215,13 +245,20 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onExit }) => {
                 })}
               </div>
 
-              <div className="pt-4 border-t border-slate-100">
+              <div className="pt-4 border-t border-slate-100 space-y-2">
                 <button
                   onClick={onExit}
                   className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold"
                 >
                   <Eye className="w-4 h-4" />
                   View Website
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-slate-100 hover:bg-red-50 text-slate-700 hover:text-red-700 text-xs font-semibold transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Lock & Log Out
                 </button>
               </div>
             </div>

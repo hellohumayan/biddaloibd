@@ -240,6 +240,9 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
     title: 'Real Student Stories',
     description: 'Hear from Bangladeshi students who transformed their dreams into reality with Biddaloi’s guidance.',
     items: testimonialsData
+  },
+  security: {
+    adminSecretKey: 'Biddaloi4670@'
   }
 };
 
@@ -303,6 +306,9 @@ export const SiteConfigProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             ...DEFAULT_SITE_CONFIG.testimonials, 
             ...(parsed.testimonials || {}),
             items: parsed.testimonials?.items?.length ? parsed.testimonials.items : DEFAULT_SITE_CONFIG.testimonials.items
+          },
+          security: {
+            adminSecretKey: parsed.security?.adminSecretKey || 'Biddaloi4670@'
           }
         };
       }

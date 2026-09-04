@@ -1,12 +1,50 @@
 import React, { useState } from 'react';
 import { useSiteConfig } from '../../../context/SiteConfigContext';
-import { Download, Upload, RotateCcw, CheckCircle2, AlertTriangle, Copy, Check } from 'lucide-react';
+import { 
+  Download, 
+  Upload, 
+  RotateCcw, 
+  CheckCircle2, 
+  AlertTriangle, 
+  Copy, 
+  Check,
+  KeyRound,
+  ShieldCheck,
+  Eye,
+  EyeOff,
+  Save,
+  Lock
+} from 'lucide-react';
 
 export const BackupResetTab: React.FC = () => {
-  const { config, exportConfigJson, importConfigJson, resetToDefaults } = useSiteConfig();
+  const { config, updateSection, exportConfigJson, importConfigJson, resetToDefaults } = useSiteConfig();
   const [importText, setImportText] = useState('');
   const [copied, setCopied] = useState(false);
+  const [keyCopied, setKeyCopied] = useState(false);
+  const [showSecretKey, setShowSecretKey] = useState(false);
+  const [secretKeyInput, setSecretKeyInput] = useState(config.security?.adminSecretKey || 'Biddaloi4670@');
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const handleSaveSecretKey = () => {
+    if (!secretKeyInput.trim()) {
+      setStatusMessage({ type: 'error', text: 'Admin secret key cannot be empty.' });
+      return;
+    }
+    updateSection('security', { adminSecretKey: secretKeyInput.trim() });
+    setStatusMessage({ type: 'success', text: 'Admin secret key updated successfully.' });
+  };
+
+  const handleResetSecretKeyToDefault = () => {
+    setSecretKeyInput('Biddaloi4670@');
+    updateSection('security', { adminSecretKey: 'Biddaloi4670@' });
+    setStatusMessage({ type: 'success', text: 'Secret key restored to default: Biddaloi4670@' });
+  };
+
+  const handleCopySecretKey = () => {
+    navigator.clipboard.writeText(secretKeyInput);
+    setKeyCopied(true);
+    setTimeout(() => setKeyCopied(false), 2000);
+  };
 
   const handleDownloadJson = () => {
     const jsonStr = exportConfigJson();
@@ -50,9 +88,9 @@ export const BackupResetTab: React.FC = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="text-xl font-bold text-slate-900">Backup, Import & Factory Reset</h3>
+        <h3 className="text-xl font-bold text-slate-900">Security, Backup & Factory Reset</h3>
         <p className="text-sm text-slate-500 mt-1">
-          Export your entire site setup as JSON, restore previous backups, or reset content to factory defaults.
+          Manage your administrative secret key, download JSON backups, or reset content to factory defaults.
         </p>
       </div>
 
@@ -72,6 +110,91 @@ export const BackupResetTab: React.FC = () => {
           <span>{statusMessage.text}</span>
         </div>
       )}
+
+      {/* Admin Secret Key Security Card */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
+              <KeyRound className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-base font-bold text-slate-900">Admin Secret Access Key</h4>
+              <p className="text-xs text-slate-500">
+                This password protects access to the Admin Studio at <code className="bg-slate-100 px-1 py-0.5 rounded text-slate-700 font-mono">/admin</code>.
+              </p>
+            </div>
+          </div>
+          <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            Password Protected
+          </span>
+        </div>
+
+        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80 space-y-3">
+          <label className="block text-xs font-bold text-slate-700">
+            Current Secret Key
+          </label>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+            <div className="relative flex-1">
+              <input
+                type={showSecretKey ? 'text' : 'password'}
+                value={secretKeyInput}
+                onChange={(e) => setSecretKeyInput(e.target.value)}
+                className="w-full pl-3.5 pr-20 py-2.5 bg-white rounded-xl border border-slate-200 text-sm font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter secret key..."
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2 gap-1">
+                <button
+                  type="button"
+                  onClick={() => setShowSecretKey(!showSecretKey)}
+                  className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 cursor-pointer"
+                  title={showSecretKey ? 'Hide password' : 'Show password'}
+                >
+                  {showSecretKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCopySecretKey}
+                  className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 cursor-pointer"
+                  title="Copy secret key"
+                >
+                  {keyCopied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleSaveSecretKey}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer"
+              >
+                <Save className="w-3.5 h-3.5" />
+                <span>Save Key</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleResetSecretKeyToDefault}
+                className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 bg-slate-200/80 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-semibold transition-all cursor-pointer"
+                title="Revert back to default: Biddaloi4670@"
+              >
+                <span>Reset to Default</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
+            <p>
+              Default secret key: <code className="bg-slate-200/80 px-1.5 py-0.5 rounded font-mono font-bold text-slate-800">Biddaloi4670@</code>
+            </p>
+            <p className="italic">
+              Keep this key safe. Only trusted managers should have access.
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* Export Section */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">

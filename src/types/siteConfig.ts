@@ -104,6 +104,10 @@ export interface TestimonialsSectionConfig {
   items: Testimonial[];
 }
 
+export interface SecurityConfig {
+  adminSecretKey: string;
+}
+
 export interface SiteConfig {
   branding: BrandingConfig;
   contact: ContactConfig;
@@ -113,4 +117,5 @@ export interface SiteConfig {
   howItWorks: HowItWorksConfig;
   liveClasses: LiveClassesConfig;
   testimonials: TestimonialsSectionConfig;
+  security?: SecurityConfig;
 }
