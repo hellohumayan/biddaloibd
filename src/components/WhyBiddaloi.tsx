@@ -42,8 +42,8 @@ export const WhyBiddaloi: React.FC<WhyBiddaloiProps> = ({ onOpenCounseling }) =>
     <section id="services" className="py-16 sm:py-20 lg:py-24 bg-white border-t border-slate-200/60 scroll-mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
+        {/* Section Heading - Left Aligned */}
+        <div className="text-left max-w-3xl mb-12 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold mb-3">
             <Sparkles className="w-3.5 h-3.5 text-blue-600" />
             <span>{servicesConfig.badge || 'The Biddaloi Advantage'}</span>
