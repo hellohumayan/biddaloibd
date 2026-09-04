@@ -10,7 +10,8 @@ import {
   Linkedin, 
   Instagram, 
   Youtube,
-  MessageCircle
+  MessageCircle,
+  Lock
 } from 'lucide-react';
 import { Logo } from './Logo';
 import { useSiteConfig } from '../context/SiteConfigContext';
@@ -19,12 +20,14 @@ interface FooterProps {
   onNavigateSection: (sectionId: string) => void;
   onFilterDestination: (destId: string) => void;
   onNavigateToCountry?: (countryId: string) => void;
+  onOpenAdmin?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   onNavigateSection,
   onFilterDestination,
-  onNavigateToCountry
+  onNavigateToCountry,
+  onOpenAdmin
 }) => {
   const { config } = useSiteConfig();
   const contact = config.contact;
@@ -218,6 +221,18 @@ export const Footer: React.FC<FooterProps> = ({
                   Terms & Conditions
                 </span>
               </li>
+              {onOpenAdmin && (
+                <li>
+                  <button 
+                    onClick={onOpenAdmin}
+                    className="text-slate-400 hover:text-blue-400 transition-colors flex items-center gap-1.5 cursor-pointer"
+                    title="Access Admin CMS Panel (Ctrl+Shift+A)"
+                  >
+                    <Lock className="w-3 h-3 text-slate-500" />
+                    <span>Admin Portal</span>
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -263,6 +278,19 @@ export const Footer: React.FC<FooterProps> = ({
             <span>Verified EdTech Platform</span>
             <span>•</span>
             <span>Mirpur Section 11, Dhaka</span>
+            {onOpenAdmin && (
+              <>
+                <span>•</span>
+                <button
+                  onClick={onOpenAdmin}
+                  className="text-slate-400 hover:text-blue-400 flex items-center gap-1 transition-colors cursor-pointer"
+                  title="Admin CMS Login (Ctrl+Shift+A)"
+                >
+                  <Lock className="w-3 h-3" />
+                  <span>Admin Panel</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
 

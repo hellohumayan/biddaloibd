@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowRight, Phone } from 'lucide-react';
+import { Menu, X, ArrowRight, Phone, Lock } from 'lucide-react';
 import { Logo } from './Logo';
 
 interface NavbarProps {
@@ -7,13 +7,15 @@ interface NavbarProps {
   onOpenLogin?: () => void;
   onOpenCounseling: () => void;
   onNavigateSection: (sectionId: string) => void;
+  onOpenAdmin?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   onOpenSearch,
   onOpenLogin,
   onOpenCounseling,
-  onNavigateSection
+  onNavigateSection,
+  onOpenAdmin
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -159,12 +161,26 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             {/* Helpline contact */}
-            <div className="p-4 bg-slate-50 border-t border-slate-100 text-xs text-slate-600 space-y-1">
+            <div className="p-4 bg-slate-50 border-t border-slate-100 text-xs text-slate-600 space-y-2">
               <div className="flex items-center gap-2 font-medium text-slate-800">
                 <Phone className="w-3.5 h-3.5 text-blue-600" />
                 <span>Dhaka Helpline: +880 1722-200432</span>
               </div>
               <p className="text-[11px] text-slate-500">Pallabi, Mirpur, Dhaka 1216</p>
+              {onOpenAdmin && (
+                <div className="pt-2 border-t border-slate-200/60">
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onOpenAdmin();
+                    }}
+                    className="text-[11px] font-semibold text-slate-500 hover:text-blue-600 flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <Lock className="w-3 h-3 text-slate-400" />
+                    <span>Admin CMS Login</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

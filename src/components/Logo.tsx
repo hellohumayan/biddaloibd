@@ -40,13 +40,18 @@ export const Logo: React.FC<LogoProps> = ({
     lg: 'max-h-[36px]',
   }[size];
 
-  // If a custom logo was uploaded and has not failed to load
-  if (config.branding.logoUrl && !imageError) {
+  // Check custom logo or default to official /biddaloiLogo.png
+  const activeLogoUrl = (config.branding.logoUrl && config.branding.logoUrl.trim() !== '')
+    ? config.branding.logoUrl
+    : '/biddaloiLogo.png';
+
+  // If a logo is available and has not failed to load
+  if (activeLogoUrl && !imageError) {
     return (
       <div className={`inline-flex items-center ${className}`}>
         <img
-          src={config.branding.logoUrl}
-          alt={config.branding.logoAlt || config.branding.brandName}
+          src={activeLogoUrl}
+          alt={config.branding.logoAlt || config.branding.brandName || 'Biddaloi'}
           style={{ height: `${computedHeight}px` }}
           className={`w-auto max-w-[170px] object-contain transition-all ${maxHeightClass} ${
             isLight ? 'brightness-0 invert' : ''

@@ -180,7 +180,7 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
   branding: {
     brandName: 'Biddaloi',
     tagline: 'Bangladesh’s Premier Study Abroad Platform',
-    logoUrl: '',
+    logoUrl: '/biddaloiLogo.png',
     logoHeight: 28,
     logoAlt: 'Biddaloi Study Abroad Logo'
   },
@@ -262,11 +262,20 @@ export const SiteConfigProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
+        const savedLogoUrl = parsed.branding?.logoUrl;
+        const validLogoUrl = (savedLogoUrl && typeof savedLogoUrl === 'string' && savedLogoUrl.trim() !== '')
+          ? savedLogoUrl
+          : DEFAULT_SITE_CONFIG.branding.logoUrl;
+
         // Deep merge with defaults so new fields are always present
         return {
           ...DEFAULT_SITE_CONFIG,
           ...parsed,
-          branding: { ...DEFAULT_SITE_CONFIG.branding, ...(parsed.branding || {}) },
+          branding: { 
+            ...DEFAULT_SITE_CONFIG.branding, 
+            ...(parsed.branding || {}),
+            logoUrl: validLogoUrl
+          },
           contact: { ...DEFAULT_SITE_CONFIG.contact, ...(parsed.contact || {}) },
           hero: { ...DEFAULT_SITE_CONFIG.hero, ...(parsed.hero || {}) },
           countries: { 

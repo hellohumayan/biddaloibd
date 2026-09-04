@@ -25,6 +25,7 @@ interface CountryPageProps {
   onOpenCounseling: (notes?: string) => void;
   onOpenSearch?: () => void;
   onOpenLogin?: () => void;
+  onOpenAdmin?: () => void;
 }
 
 export const CountryPage: React.FC<CountryPageProps> = ({
@@ -34,7 +35,8 @@ export const CountryPage: React.FC<CountryPageProps> = ({
   onSelectCountrySlug,
   onOpenCounseling,
   onOpenSearch,
-  onOpenLogin
+  onOpenLogin,
+  onOpenAdmin
 }) => {
   const { config } = useSiteConfig();
 
@@ -70,6 +72,7 @@ export const CountryPage: React.FC<CountryPageProps> = ({
         onOpenLogin={onOpenLogin}
         onOpenCounseling={() => onOpenCounseling(`Direct Application: Study in ${country.name}`)}
         onNavigateSection={onNavigateSection}
+        onOpenAdmin={onOpenAdmin}
       />
 
       {/* Main Content Body */}
@@ -178,6 +181,7 @@ export const CountryPage: React.FC<CountryPageProps> = ({
         onNavigateSection={onNavigateSection}
         onFilterDestination={(destId) => onSelectCountrySlug(`study-in-${destId}`)}
         onNavigateToCountry={(destId) => onSelectCountrySlug(`study-in-${destId}`)}
+        onOpenAdmin={onOpenAdmin}
       />
 
       {/* Mobile Sticky Bottom CTA Bar */}

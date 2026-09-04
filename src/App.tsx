@@ -36,6 +36,7 @@ interface MainWebsiteProps {
   onViewCourse: (course: Course) => void;
   onCheckEligibility: (course: Course) => void;
   onWatchVideos: () => void;
+  onOpenAdmin: () => void;
 }
 
 function MainWebsite({ 
@@ -46,7 +47,8 @@ function MainWebsite({
   onOpenCounselingWithCourse,
   onViewCourse,
   onCheckEligibility,
-  onWatchVideos
+  onWatchVideos,
+  onOpenAdmin
 }: MainWebsiteProps) {
   // Filter state synchronized between sections
   const [selectedDestination, setSelectedDestination] = useState<string>('all');
@@ -73,6 +75,7 @@ function MainWebsite({
         onOpenLogin={onOpenLogin}
         onOpenCounseling={() => onOpenCounselingWithCountry()}
         onNavigateSection={scrollToSection}
+        onOpenAdmin={onOpenAdmin}
       />
 
       {/* Main Content Sections */}
@@ -117,6 +120,7 @@ function MainWebsite({
         onNavigateSection={scrollToSection}
         onFilterDestination={handleSelectDestination}
         onNavigateToCountry={onNavigateToCountry}
+        onOpenAdmin={onOpenAdmin}
       />
 
       {/* Mobile Sticky Bottom CTA Bar */}
@@ -136,17 +140,31 @@ interface RouteState {
 function resolveCurrentRoute(): RouteState {
   const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
   const hash = window.location.hash.replace(/^#\/?/, '');
+  const search = new URLSearchParams(window.location.search);
 
-  if (path === 'admin' || hash === 'admin' || path.startsWith('admin/') || hash.startsWith('admin/')) {
+  // Admin route check: supports /admin, /admin/, #admin, ?admin, ?view=admin
+  if (
+    path === 'admin' || 
+    path.startsWith('admin/') || 
+    hash === 'admin' || 
+    hash.startsWith('admin/') ||
+    search.has('admin') ||
+    search.get('view') === 'admin'
+  ) {
     return { view: 'admin', countryParam: null };
   }
 
-  // Country route check: /study-in-xyz or #study-in-xyz
+  // Country route check: /study-in-xyz or #study-in-xyz or ?country=xyz
   if (path.startsWith('study-in-')) {
     return { view: 'country', countryParam: path };
   }
   if (hash.startsWith('study-in-')) {
     return { view: 'country', countryParam: hash };
+  }
+  if (search.has('country')) {
+    const c = search.get('country') || '';
+    const slug = c.startsWith('study-in-') ? c : `study-in-${c}`;
+    return { view: 'country', countryParam: slug };
   }
 
   return { view: 'home', countryParam: null };
@@ -213,6 +231,12 @@ export default function App() {
     setRoute({ view: 'home', countryParam: null });
   }, []);
 
+  const handleNavigateAdmin = useCallback(() => {
+    window.history.pushState({}, '', '/admin');
+    setRoute({ view: 'admin', countryParam: null });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const handleNavigateHome = useCallback(() => {
     window.history.pushState({}, '', '/');
     setRoute({ view: 'home', countryParam: null });
@@ -268,6 +292,7 @@ export default function App() {
           onOpenCounseling={(notes) => handleOpenCounseling(countryData.id, notes)}
           onOpenSearch={() => setIsSearchOpen(true)}
           onOpenLogin={() => setIsAuthOpen(true)}
+          onOpenAdmin={handleNavigateAdmin}
         />
       ) : (
         <MainWebsite 
@@ -285,6 +310,7 @@ export default function App() {
             setIsEligibilityOpen(true);
           }}
           onWatchVideos={() => setIsLiveClassesOpen(true)}
+          onOpenAdmin={handleNavigateAdmin}
         />
       )}
 
@@ -336,6 +362,7 @@ export default function App() {
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
+        onOpenAdmin={handleNavigateAdmin}
       />
 
       <LiveClassesModal

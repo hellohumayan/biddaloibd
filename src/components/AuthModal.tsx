@@ -5,9 +5,10 @@ import { Logo } from './Logo';
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenAdmin?: () => void;
 }
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onOpenAdmin }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -133,6 +134,23 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                     : 'Already have a profile? Sign In'}
                 </button>
               </div>
+
+              {onOpenAdmin && (
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                  <span>Site Administrator?</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      onOpenAdmin();
+                    }}
+                    className="text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-1 hover:underline cursor-pointer"
+                  >
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>Access Admin Panel</span>
+                  </button>
+                </div>
+              )}
             </form>
           )}
         </div>
