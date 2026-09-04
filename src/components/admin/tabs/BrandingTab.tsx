@@ -9,7 +9,8 @@ import {
   Sliders, 
   Sparkles,
   RefreshCw,
-  Eye
+  Eye,
+  Share2
 } from 'lucide-react';
 
 export const BrandingTab: React.FC = () => {
@@ -224,7 +225,7 @@ export const BrandingTab: React.FC = () => {
         </div>
       </div>
 
-      {/* Brand Name & Typography */}
+      {/* Brand Name & Tagline */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-5">
         <h4 className="text-base font-bold text-slate-900">Brand Name & Tagline</h4>
         
@@ -269,6 +270,37 @@ export const BrandingTab: React.FC = () => {
             placeholder="e.g. Bangladesh’s Premier Study Abroad Platform"
             className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+        </div>
+      </div>
+
+      {/* Social Media Infograph / Open Graph Share Card */}
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Share2 className="w-4 h-4 text-blue-600" />
+            <h4 className="text-base font-bold text-slate-900">Social Media Infograph & Link Preview</h4>
+          </div>
+          <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+            Active for Facebook & WhatsApp
+          </span>
+        </div>
+        <p className="text-xs text-slate-600 leading-relaxed">
+          When anyone shares links to your website on Facebook, WhatsApp, LinkedIn, or Twitter, this official graphic card appears automatically in their feed preview.
+        </p>
+
+        <div className="border border-slate-200 rounded-xl overflow-hidden bg-slate-50 p-4">
+          <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Live Share Card Preview (1200 × 630)</p>
+          <div className="rounded-lg overflow-hidden border border-slate-200 shadow-sm bg-white">
+            <img 
+              src="/og-share.jpg" 
+              alt="Biddaloi Social Share Infograph" 
+              className="w-full h-auto max-h-[260px] object-contain bg-white"
+            />
+            <div className="p-3 bg-slate-100/70 border-t border-slate-200">
+              <p className="text-xs font-bold text-slate-800">Biddaloi - Study Abroad & Global Education Platform</p>
+              <p className="text-[11px] text-slate-500 truncate">biddaloibd.com • Discover universities, courses, and scholarships for Bangladeshi students</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
