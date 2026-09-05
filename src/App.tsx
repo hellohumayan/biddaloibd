@@ -41,6 +41,9 @@ import { resourcesData } from './data/resources';
 // About Us Page
 import { AboutPage } from './components/about/AboutPage';
 
+// Contact Us Page
+import { ContactPage } from './components/contact/ContactPage';
+
 import { Course } from './types';
 
 interface MainWebsiteProps {
@@ -56,6 +59,7 @@ interface MainWebsiteProps {
   onNavigatePartners?: () => void;
   onNavigateBlog?: (articleId?: string) => void;
   onNavigateAbout?: () => void;
+  onNavigateContact?: () => void;
 }
 
 function MainWebsite({ 
@@ -70,7 +74,8 @@ function MainWebsite({
   onNavigateAffiliate,
   onNavigatePartners,
   onNavigateBlog,
-  onNavigateAbout
+  onNavigateAbout,
+  onNavigateContact
 }: MainWebsiteProps) {
   // Filter state synchronized between sections
   const [selectedDestination, setSelectedDestination] = useState<string>('all');
@@ -83,6 +88,10 @@ function MainWebsite({
     }
     if ((sectionId === 'about' || sectionId === 'about-us' || sectionId === 'about-biddaloi') && onNavigateAbout) {
       onNavigateAbout();
+      return;
+    }
+    if ((sectionId === 'contact' || sectionId === 'contact-us') && onNavigateContact) {
+      onNavigateContact();
       return;
     }
     const targetId = (sectionId === 'universities' || sectionId === 'courses' || sectionId === 'destinations') ? 'countries' : sectionId;
@@ -166,7 +175,7 @@ function MainWebsite({
 }
 
 interface RouteState {
-  view: 'home' | 'admin' | 'country' | 'affiliate' | 'partners' | 'ielts-roadmap' | 'blog' | 'about';
+  view: 'home' | 'admin' | 'country' | 'affiliate' | 'partners' | 'ielts-roadmap' | 'blog' | 'about' | 'contact';
   countryParam: string | null;
   articleParam?: string | null;
 }
@@ -186,6 +195,21 @@ function resolveCurrentRoute(): RouteState {
     search.get('view') === 'admin'
   ) {
     return { view: 'admin', countryParam: null };
+  }
+
+  // Contact route check: /contact, /contact-us, #contact, #contact-us, ?contact, ?view=contact
+  if (
+    path === 'contact' ||
+    path.startsWith('contact/') ||
+    path === 'contact-us' ||
+    path.startsWith('contact-us/') ||
+    hash === 'contact' ||
+    hash === 'contact-us' ||
+    hash.startsWith('contact/') ||
+    search.has('contact') ||
+    search.get('view') === 'contact'
+  ) {
+    return { view: 'contact', countryParam: null };
   }
 
   // About route check: /about, /about-us, /about-biddaloi, #about, #about-us, #about-biddaloi, ?about, ?view=about
@@ -407,6 +431,12 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  const handleNavigateContact = useCallback(() => {
+    window.history.pushState({}, '', '/contact');
+    setRoute({ view: 'contact', countryParam: null });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const handleNavigateBlog = useCallback((articleId?: string) => {
     let url = '/blog';
     if (articleId) {
@@ -441,6 +471,10 @@ export default function App() {
       handleNavigateAbout();
       return;
     }
+    if (sectionId === 'contact' || sectionId === 'contact-us') {
+      handleNavigateContact();
+      return;
+    }
     window.history.pushState({}, '', '/');
     setRoute({ view: 'home', countryParam: null });
     setTimeout(() => {
@@ -452,7 +486,7 @@ export default function App() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }, 80);
-  }, [handleNavigateBlog, handleNavigateAbout]);
+  }, [handleNavigateBlog, handleNavigateAbout, handleNavigateContact]);
 
   const handleOpenCounseling = useCallback((destId?: string, courseTitle?: string) => {
     if (destId) {
@@ -541,6 +575,18 @@ export default function App() {
           onOpenSearch={() => setIsSearchOpen(true)}
           onOpenLogin={() => setIsAuthOpen(true)}
         />
+      ) : route.view === 'contact' ? (
+        <ContactPage
+          onNavigateHome={handleNavigateHome}
+          onNavigateSection={handleNavigateSectionFromCountry}
+          onNavigateToCountry={handleNavigateToCountry}
+          onNavigateToAffiliate={handleNavigateAffiliate}
+          onNavigateToPartners={handleNavigatePartners}
+          onNavigateBlog={handleNavigateBlog}
+          onOpenCounseling={(notes) => handleOpenCounseling(undefined, notes)}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenLogin={() => setIsAuthOpen(true)}
+        />
       ) : (
         <MainWebsite 
           onNavigateToCountry={handleNavigateToCountry}
@@ -561,6 +607,7 @@ export default function App() {
           onNavigatePartners={handleNavigatePartners}
           onNavigateBlog={handleNavigateBlog}
           onNavigateAbout={handleNavigateAbout}
+          onNavigateContact={handleNavigateContact}
         />
       )}
 
