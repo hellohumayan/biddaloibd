@@ -13,7 +13,7 @@ export const destinationsData: Destination[] = [
     avgTuition: '$18,000 - $42,000 / yr',
     avgLiving: '$10,000 - $15,000 / yr',
     workPermit: 'Up to 3 Years STEM OPT',
-    universityCount: 45,
+    universityCount: 255,
     featuredUnis: ['University of Texas at Arlington', 'Arizona State University', 'George Mason University', 'SUNY Buffalo']
   },
   {

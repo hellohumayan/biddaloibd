@@ -3,25 +3,50 @@ import { BookOpen, Clock, ArrowRight, X, Sparkles } from 'lucide-react';
 import { resourcesData } from '../data/resources';
 import { ResourceArticle } from '../types';
 
-export const ResourcesSection: React.FC = () => {
+interface ResourcesSectionProps {
+  onNavigateBlog?: (articleId?: string) => void;
+}
+
+export const ResourcesSection: React.FC<ResourcesSectionProps> = ({ onNavigateBlog }) => {
   const [activeArticle, setActiveArticle] = useState<ResourceArticle | null>(null);
+
+  const handleOpenArticle = (article: ResourceArticle) => {
+    if (onNavigateBlog) {
+      onNavigateBlog(article.slug || article.id);
+    } else {
+      setActiveArticle(article);
+    }
+  };
 
   return (
     <section id="resources" className="py-20 bg-[#F8FAFD] border-t border-slate-200/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Heading - Left Aligned */}
-        <div className="text-left max-w-3xl mb-12 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-            Knowledge Base
+        {/* Section Heading - Left Aligned with Explore All CTA */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12 sm:mb-14">
+          <div className="text-left max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold mb-3">
+              <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+              Knowledge Base
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Learn Before You Apply
+            </h2>
+            <p className="text-base sm:text-lg text-slate-600 mt-3 leading-relaxed">
+              In-depth guides, visa blueprints, and expert admission strategies written specifically for Bangladeshi students.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Learn Before You Apply
-          </h2>
-          <p className="text-base sm:text-lg text-slate-600 mt-3 leading-relaxed">
-            In-depth guides, visa blueprints, and expert admission strategies written specifically for Bangladeshi students.
-          </p>
+
+          {onNavigateBlog && (
+            <button
+              type="button"
+              onClick={() => onNavigateBlog()}
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-blue-50 text-blue-600 font-extrabold text-xs sm:text-sm border border-blue-200 shadow-2xs hover:border-blue-300 transition-all shrink-0 self-start sm:self-end"
+            >
+              <span>Explore All Blog Articles</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         {/* Resources Grid - Limited to Top 3 Featured Blogs */}
@@ -67,8 +92,8 @@ export const ResourcesSection: React.FC = () => {
               <div className="px-5 pb-5 sm:px-6 sm:pb-6 pt-2">
                 <button
                   type="button"
-                  onClick={() => setActiveArticle(article)}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 group-hover:translate-x-0.5 transition-transform"
+                  onClick={() => handleOpenArticle(article)}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 group-hover:translate-x-0.5 transition-transform cursor-pointer"
                 >
                   <span>Read Full Guide</span>
                   <ArrowRight className="w-3.5 h-3.5" />

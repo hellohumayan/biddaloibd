@@ -64,6 +64,27 @@ export const CountryUniversityList: React.FC<CountryUniversityListProps> = ({
     });
   }, [universities, selectedArea, searchTerm]);
 
+  // Group USA universities by state while keeping number and university name only
+  const groupedUsaUnis = useMemo(() => {
+    if (country.id !== 'usa') return [];
+    const groups: { state: string; items: typeof filteredUnis }[] = [];
+    const map = new Map<string, typeof filteredUnis>();
+
+    filteredUnis.forEach(uni => {
+      const stateKey = uni.area || 'Other';
+      if (!map.has(stateKey)) {
+        map.set(stateKey, []);
+      }
+      map.get(stateKey)!.push(uni);
+    });
+
+    map.forEach((items, state) => {
+      groups.push({ state, items });
+    });
+
+    return groups;
+  }, [country.id, filteredUnis]);
+
   return (
     <section id="universities" className="py-16 sm:py-20 bg-slate-50/60 border-b border-slate-200 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,7 +99,7 @@ export const CountryUniversityList: React.FC<CountryUniversityListProps> = ({
               <span className="text-blue-600 font-semibold">{universities.length} Institutions Listed</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Recognized University Directory in {country.name}
+              {country.id === 'usa' ? 'Institutional Directory In United State Of America' : `Recognized University Directory in ${country.name}`}
             </h2>
             <p className="text-slate-600 mt-2 text-sm sm:text-base leading-relaxed">
               Explore partner institutions grouped by geographical area and campus location, offering scholarship assessments, English waivers, and direct admission pathways for Bangladeshi applicants.
@@ -108,33 +129,35 @@ export const CountryUniversityList: React.FC<CountryUniversityListProps> = ({
               )}
             </div>
 
-            {/* View Mode Toggle */}
-            <div className="inline-flex items-center p-1 rounded-xl bg-white border border-slate-200 shadow-2xs self-start sm:self-auto">
-              <button
-                onClick={() => setViewMode('list')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  viewMode === 'list'
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                }`}
-                title="List View"
-              >
-                <LayoutList className="w-3.5 h-3.5" />
-                <span>List</span>
-              </button>
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  viewMode === 'grid'
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                }`}
-                title="Grid View"
-              >
-                <LayoutGrid className="w-3.5 h-3.5" />
-                <span>Grid</span>
-              </button>
-            </div>
+            {/* View Mode Toggle (hidden for USA as it uses dedicated numbered list) */}
+            {country.id !== 'usa' && (
+              <div className="inline-flex items-center p-1 rounded-xl bg-white border border-slate-200 shadow-2xs self-start sm:self-auto">
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    viewMode === 'list'
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`}
+                  title="List View"
+                >
+                  <LayoutList className="w-3.5 h-3.5" />
+                  <span>List</span>
+                </button>
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    viewMode === 'grid'
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`}
+                  title="Grid View"
+                >
+                  <LayoutGrid className="w-3.5 h-3.5" />
+                  <span>Grid</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -185,7 +208,50 @@ export const CountryUniversityList: React.FC<CountryUniversityListProps> = ({
         </div>
 
         {/* Universities Display */}
-        {viewMode === 'list' ? (
+        {country.id === 'usa' ? (
+          /* USA DIRECTORY: Organized by State with Number and University Name ONLY as requested */
+          <div className="space-y-8">
+            {groupedUsaUnis.length === 0 ? (
+              <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-500">
+                No universities found matching "{searchTerm}". Try a different state or keyword.
+              </div>
+            ) : (
+              groupedUsaUnis.map((group) => (
+                <div key={group.state} className="space-y-3">
+                  <div className="flex items-center gap-2.5 pb-2 border-b border-slate-200">
+                    <span className="w-2.5 h-2.5 rounded-full bg-blue-600 shrink-0" />
+                    <h3 className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
+                      {group.state}
+                    </h3>
+                    <span className="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200/80 px-2.5 py-0.5 rounded-full">
+                      {group.items.length} {group.items.length === 1 ? 'Institution' : 'Institutions'}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {group.items.map((uni, index) => (
+                      <div
+                        key={uni.id}
+                        onClick={() => onOpenCounseling(`Admission Application for ${uni.name} (${group.state}, USA)`)}
+                        className="flex items-center justify-between gap-3 px-4 py-3.5 bg-white rounded-xl border border-slate-200/90 hover:border-blue-400 hover:shadow-xs transition-all duration-150 cursor-pointer group"
+                      >
+                        <div className="flex items-center gap-3.5 min-w-0">
+                          <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-50 text-blue-700 font-bold text-xs shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            {index + 1}
+                          </span>
+                          <span className="text-sm sm:text-base font-bold text-slate-800 group-hover:text-blue-600 transition-colors leading-snug">
+                            {uni.name}
+                          </span>
+                        </div>
+                        <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all shrink-0" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        ) : viewMode === 'list' ? (
           /* ============================================================ */
           /* LIST VIEW: Streamlined, high-density, informative directory   */
           /* ============================================================ */

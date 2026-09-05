@@ -35,12 +35,27 @@ export const CountryHero: React.FC<CountryHeroProps> = ({
             {/* Trust Eyebrow Badge */}
             <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white border border-blue-200 shadow-xs max-w-full">
               <span className="flex h-2.5 w-2.5 rounded-full bg-blue-600 animate-pulse flex-shrink-0" />
-              <span className="text-sm sm:text-base font-extrabold text-blue-900 tracking-tight flex items-center gap-1.5">
-                <span>{country.flag}</span>
-                <span>Study in {country.name}</span>
+              <span className="text-sm sm:text-base font-extrabold text-blue-900 tracking-tight flex items-center gap-2">
+                {country.id === 'usa' ? (
+                  'More Than 250+ Universities Across 40+ States'
+                ) : (
+                  <>
+                    <img
+                      src={country.flagImage}
+                      alt=""
+                      className="w-5 h-3.5 object-cover rounded-xs border border-slate-200 shadow-2xs shrink-0 inline-block"
+                      referrerPolicy="no-referrer"
+                    />
+                    <span>Study in {country.name}</span>
+                  </>
+                )}
               </span>
-              <span className="text-slate-300">•</span>
-              <span className="text-xs font-medium text-slate-600">2025/2026 Admissions Open</span>
+              {country.id !== 'usa' && (
+                <>
+                  <span className="text-slate-300">•</span>
+                  <span className="text-xs font-medium text-slate-600">2025/2026 Admissions Open</span>
+                </>
+              )}
             </div>
 
             {/* Main Headline */}

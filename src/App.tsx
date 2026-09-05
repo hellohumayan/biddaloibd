@@ -31,6 +31,16 @@ import { AffiliatePage } from './components/affiliate/AffiliatePage';
 // Partners Page
 import { PartnersPage } from './components/partners/PartnersPage';
 
+// 60 Days IELTS Roadmap Page
+import { IeltsRoadmapPage } from './components/ieltsRoadmap/IeltsRoadmapPage';
+
+// Blog Page
+import { BlogPage } from './components/blog/BlogPage';
+import { resourcesData } from './data/resources';
+
+// About Us Page
+import { AboutPage } from './components/about/AboutPage';
+
 import { Course } from './types';
 
 interface MainWebsiteProps {
@@ -44,6 +54,8 @@ interface MainWebsiteProps {
   onWatchVideos: () => void;
   onNavigateAffiliate?: () => void;
   onNavigatePartners?: () => void;
+  onNavigateBlog?: (articleId?: string) => void;
+  onNavigateAbout?: () => void;
 }
 
 function MainWebsite({ 
@@ -56,13 +68,23 @@ function MainWebsite({
   onCheckEligibility,
   onWatchVideos,
   onNavigateAffiliate,
-  onNavigatePartners
+  onNavigatePartners,
+  onNavigateBlog,
+  onNavigateAbout
 }: MainWebsiteProps) {
   // Filter state synchronized between sections
   const [selectedDestination, setSelectedDestination] = useState<string>('all');
 
   // Smooth scroll handler
   const scrollToSection = (sectionId: string) => {
+    if ((sectionId === 'blog' || sectionId === 'blogs') && onNavigateBlog) {
+      onNavigateBlog();
+      return;
+    }
+    if ((sectionId === 'about' || sectionId === 'about-us' || sectionId === 'about-biddaloi') && onNavigateAbout) {
+      onNavigateAbout();
+      return;
+    }
     const targetId = (sectionId === 'universities' || sectionId === 'courses' || sectionId === 'destinations') ? 'countries' : sectionId;
     const el = document.getElementById(targetId) || document.getElementById(sectionId);
     if (el) {
@@ -116,7 +138,7 @@ function MainWebsite({
         <TestimonialsSection />
 
         {/* 6. Educational Resources & Guides */}
-        <ResourcesSection />
+        <ResourcesSection onNavigateBlog={onNavigateBlog} />
 
         {/* 7. Final High-Conversion CTA Banner */}
         <FinalCTA
@@ -144,8 +166,9 @@ function MainWebsite({
 }
 
 interface RouteState {
-  view: 'home' | 'admin' | 'country' | 'affiliate' | 'partners';
+  view: 'home' | 'admin' | 'country' | 'affiliate' | 'partners' | 'ielts-roadmap' | 'blog' | 'about';
   countryParam: string | null;
+  articleParam?: string | null;
 }
 
 function resolveCurrentRoute(): RouteState {
@@ -163,6 +186,63 @@ function resolveCurrentRoute(): RouteState {
     search.get('view') === 'admin'
   ) {
     return { view: 'admin', countryParam: null };
+  }
+
+  // About route check: /about, /about-us, /about-biddaloi, #about, #about-us, #about-biddaloi, ?about, ?view=about
+  if (
+    path === 'about' ||
+    path.startsWith('about/') ||
+    path === 'about-us' ||
+    path.startsWith('about-us/') ||
+    path === 'about-biddaloi' ||
+    path.startsWith('about-biddaloi/') ||
+    hash === 'about' ||
+    hash === 'about-us' ||
+    hash === 'about-biddaloi' ||
+    hash.startsWith('about/') ||
+    search.has('about') ||
+    search.get('view') === 'about'
+  ) {
+    return { view: 'about', countryParam: null };
+  }
+
+  // 60 Days IELTS Roadmap route check: /ielts-roadmap, /roadmap, #ielts-roadmap, #roadmap, ?roadmap, ?ielts-roadmap, ?view=ielts-roadmap, ?view=roadmap
+  if (
+    path === 'ielts-roadmap' ||
+    path.startsWith('ielts-roadmap/') ||
+    path === 'roadmap' ||
+    path.startsWith('roadmap/') ||
+    hash === 'ielts-roadmap' ||
+    hash.startsWith('ielts-roadmap/') ||
+    hash === 'roadmap' ||
+    hash.startsWith('roadmap/') ||
+    search.has('ielts-roadmap') ||
+    search.has('roadmap') ||
+    search.get('view') === 'ielts-roadmap' ||
+    search.get('view') === 'roadmap'
+  ) {
+    return { view: 'ielts-roadmap', countryParam: null };
+  }
+
+  // Blog route check: /blog, /blogs, /articles, #blog, #blogs, ?blog, ?blogs, ?view=blog, ?view=blogs
+  if (
+    path === 'blog' ||
+    path.startsWith('blog/') ||
+    path === 'blogs' ||
+    path.startsWith('blogs/') ||
+    path === 'articles' ||
+    path.startsWith('articles/') ||
+    hash === 'blog' ||
+    hash.startsWith('blog/') ||
+    hash === 'blogs' ||
+    hash.startsWith('blogs/') ||
+    search.has('blog') ||
+    search.has('blogs') ||
+    search.get('view') === 'blog' ||
+    search.get('view') === 'blogs'
+  ) {
+    const article = search.get('article') || (path.startsWith('blog/') ? path.split('/')[1] : null);
+    return { view: 'blog', countryParam: null, articleParam: article };
   }
 
   // Affiliate route check: /affiliate, /affiliate/, #affiliate, ?affiliate, ?view=affiliate
@@ -192,6 +272,26 @@ function resolveCurrentRoute(): RouteState {
     search.get('view') === 'partner'
   ) {
     return { view: 'partners', countryParam: null };
+  }
+
+  // Direct article route check: e.g. /study-in-india-from-bangladesh-guide
+  if (
+    path === 'study-in-india-from-bangladesh-guide' ||
+    path.startsWith('study-in-india-from-bangladesh-guide/') ||
+    hash === 'study-in-india-from-bangladesh-guide' ||
+    hash.startsWith('study-in-india-from-bangladesh-guide/') ||
+    search.has('study-in-india-from-bangladesh-guide') ||
+    search.get('article') === 'study-in-india-from-bangladesh-guide'
+  ) {
+    return { view: 'blog', countryParam: null, articleParam: 'study-in-india-from-bangladesh-guide' };
+  }
+
+  // Any other direct article slug check from resourcesData (before country check)
+  const matchedArticle = resourcesData.find(
+    (a) => a.slug === path || a.id === path || a.slug === hash || a.id === hash
+  );
+  if (matchedArticle) {
+    return { view: 'blog', countryParam: null, articleParam: matchedArticle.slug || matchedArticle.id };
   }
 
   // Country route check: /study-in-xyz or #study-in-xyz or ?country=xyz
@@ -295,6 +395,35 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  const handleNavigateIeltsRoadmap = useCallback(() => {
+    window.history.pushState({}, '', '/ielts-roadmap');
+    setRoute({ view: 'ielts-roadmap', countryParam: null });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const handleNavigateAbout = useCallback(() => {
+    window.history.pushState({}, '', '/about');
+    setRoute({ view: 'about', countryParam: null });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const handleNavigateBlog = useCallback((articleId?: string) => {
+    let url = '/blog';
+    if (articleId) {
+      if (
+        articleId === 'study-in-india-from-bangladesh-guide' ||
+        articleId === 'study-in-india-guide-2026'
+      ) {
+        url = '/study-in-india-from-bangladesh-guide';
+      } else {
+        url = `/blog?article=${articleId}`;
+      }
+    }
+    window.history.pushState({}, '', url);
+    setRoute({ view: 'blog', countryParam: null, articleParam: articleId || null });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const handleNavigateToCountry = useCallback((countryIdOrSlug: string) => {
     const cleanId = countryIdOrSlug.replace(/^study-in-/, '');
     const slug = `study-in-${cleanId}`;
@@ -304,6 +433,14 @@ export default function App() {
   }, []);
 
   const handleNavigateSectionFromCountry = useCallback((sectionId: string) => {
+    if (sectionId === 'blog' || sectionId === 'blogs') {
+      handleNavigateBlog();
+      return;
+    }
+    if (sectionId === 'about' || sectionId === 'about-us' || sectionId === 'about-biddaloi') {
+      handleNavigateAbout();
+      return;
+    }
     window.history.pushState({}, '', '/');
     setRoute({ view: 'home', countryParam: null });
     setTimeout(() => {
@@ -315,7 +452,7 @@ export default function App() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }, 80);
-  }, []);
+  }, [handleNavigateBlog, handleNavigateAbout]);
 
   const handleOpenCounseling = useCallback((destId?: string, courseTitle?: string) => {
     if (destId) {
@@ -367,6 +504,43 @@ export default function App() {
           onOpenSearch={() => setIsSearchOpen(true)}
           onOpenLogin={() => setIsAuthOpen(true)}
         />
+      ) : route.view === 'ielts-roadmap' ? (
+        <IeltsRoadmapPage
+          onNavigateHome={handleNavigateHome}
+          onNavigateSection={handleNavigateSectionFromCountry}
+          onNavigateToCountry={handleNavigateToCountry}
+          onNavigateToAffiliate={handleNavigateAffiliate}
+          onNavigateToPartners={handleNavigatePartners}
+          onOpenCounseling={(notes) => handleOpenCounseling(undefined, notes)}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenLogin={() => setIsAuthOpen(true)}
+          onViewCourses={() => setIsLiveClassesOpen(true)}
+        />
+      ) : route.view === 'blog' ? (
+        <BlogPage
+          initialArticleId={route.articleParam}
+          onNavigateHome={handleNavigateHome}
+          onNavigateSection={handleNavigateSectionFromCountry}
+          onNavigateToCountry={handleNavigateToCountry}
+          onNavigateToAffiliate={handleNavigateAffiliate}
+          onNavigateToPartners={handleNavigatePartners}
+          onNavigateIeltsRoadmap={handleNavigateIeltsRoadmap}
+          onOpenCounseling={(notes) => handleOpenCounseling(undefined, notes)}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenLogin={() => setIsAuthOpen(true)}
+        />
+      ) : route.view === 'about' ? (
+        <AboutPage
+          onNavigateHome={handleNavigateHome}
+          onNavigateSection={handleNavigateSectionFromCountry}
+          onNavigateToCountry={handleNavigateToCountry}
+          onNavigateToAffiliate={handleNavigateAffiliate}
+          onNavigateToPartners={handleNavigatePartners}
+          onNavigateBlog={handleNavigateBlog}
+          onOpenCounseling={(notes) => handleOpenCounseling(undefined, notes)}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenLogin={() => setIsAuthOpen(true)}
+        />
       ) : (
         <MainWebsite 
           onNavigateToCountry={handleNavigateToCountry}
@@ -385,6 +559,8 @@ export default function App() {
           onWatchVideos={() => setIsLiveClassesOpen(true)}
           onNavigateAffiliate={handleNavigateAffiliate}
           onNavigatePartners={handleNavigatePartners}
+          onNavigateBlog={handleNavigateBlog}
+          onNavigateAbout={handleNavigateAbout}
         />
       )}
 

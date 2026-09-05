@@ -88,7 +88,12 @@ export const DestinationsSection: React.FC<DestinationsSectionProps> = ({ onSele
                 
                 {/* Country Flag & Code */}
                 <div className="absolute top-3.5 left-3.5 flex items-center gap-1.5 px-2.5 py-1 bg-white/95 backdrop-blur-md rounded-xl shadow-xs">
-                  <span className="text-base">{dest.flag}</span>
+                  <img
+                    src={dest.flagImage}
+                    alt=""
+                    className="w-5 h-3.5 object-cover rounded-xs border border-slate-200/80 shrink-0"
+                    referrerPolicy="no-referrer"
+                  />
                   <span className="text-xs font-bold text-slate-900">{dest.code}</span>
                 </div>
 

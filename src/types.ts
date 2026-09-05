@@ -113,6 +113,47 @@ export interface Testimonial {
   scholarshipReceived?: string;
 }
 
+export interface ArticleStep {
+  title: string;
+  desc: string;
+}
+
+export interface ArticleTable {
+  headers: string[];
+  rows: string[][];
+}
+
+export interface ArticleCallout {
+  type: 'note' | 'tip';
+  title?: string;
+  text: string;
+}
+
+export interface ArticleVideo {
+  youtubeId: string;
+  title?: string;
+  caption?: string;
+}
+
+export interface ArticleSubsection {
+  subheading: string;
+  content?: string;
+  points?: string[];
+}
+
+export interface ArticleSection {
+  id?: string;
+  heading: string;
+  content: string;
+  points?: string[];
+  subsections?: ArticleSubsection[];
+  steps?: ArticleStep[];
+  table?: ArticleTable;
+  callouts?: ArticleCallout[];
+  videos?: ArticleVideo[];
+  checklist?: string[];
+}
+
 export interface ResourceArticle {
   id: string;
   title: string;
@@ -122,6 +163,30 @@ export interface ResourceArticle {
   thumbnail: string;
   publishedDate: string;
   featuredContent: string;
+  slug?: string;
+  author?: {
+    name: string;
+    role: string;
+    avatar: string;
+    bio?: string;
+    youtubeUrl?: string;
+  };
+  tags?: string[];
+  sections?: ArticleSection[];
+  keyTakeaways?: string[];
+  actionSteps?: string[];
+  views?: number;
+  featured?: boolean;
+  toc?: { id: string; label: string }[];
+  faqs?: { question: string; answer: string }[];
+  customCta?: {
+    title: string;
+    description: string;
+    primaryBtnText: string;
+    primaryBtnUrl?: string;
+    secondaryBtnText?: string;
+    secondaryBtnUrl?: string;
+  };
 }
 
 export interface FAQItem {

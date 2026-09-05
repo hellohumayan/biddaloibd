@@ -1,4 +1,5 @@
 import { CountryPageData } from '../../types/country';
+import { usaUniversities } from './usaUniversities';
 
 export const usaCountryData: CountryPageData = {
   id: 'usa',
@@ -94,72 +95,7 @@ export const usaCountryData: CountryPageData = {
     workPermitAfterStudy: '12 Months standard OPT + 24 Months STEM extension (Total 3 Years)'
   },
 
-  universities: [
-    {
-      id: 'uta',
-      name: 'University of Texas at Arlington',
-      location: 'Arlington, Texas',
-      area: 'Texas',
-      ranking: 'Carnegie R1 Top Tier Research',
-      type: 'Public',
-      popularMajors: ['Computer Science', 'Data Science', 'Mechanical Engineering', 'Information Systems'],
-      estTuition: '$17,500 - $24,000 / yr',
-      tuitionBdt: 'BDT 21 - 29 Lakh / yr',
-      ieltsReq: '6.5 (min 6.0)',
-      pteReq: '58+',
-      scholarshipAvailable: 'Up to $10,000 + In-state Tuition Waiver',
-      intakes: ['Fall (August)', 'Spring (January)'],
-      image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80'
-    },
-    {
-      id: 'asu',
-      name: 'Arizona State University',
-      location: 'Tempe & Phoenix, Arizona',
-      area: 'Arizona',
-      ranking: '#1 Most Innovative University in the US',
-      type: 'Public',
-      popularMajors: ['Software Engineering', 'Business Analytics', 'Biomedical Science', 'Finance'],
-      estTuition: '$26,000 - $34,000 / yr',
-      tuitionBdt: 'BDT 31 - 41 Lakh / yr',
-      ieltsReq: '6.5',
-      pteReq: '58+',
-      scholarshipAvailable: '$5,000 - $14,500 Merit Award',
-      intakes: ['Fall (August)', 'Spring (January)'],
-      image: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80'
-    },
-    {
-      id: 'gmu',
-      name: 'George Mason University',
-      location: 'Fairfax, Virginia (Near Washington D.C.)',
-      area: 'Virginia (DC Metro)',
-      ranking: 'Top 50 US Public University',
-      type: 'Public',
-      popularMajors: ['Cyber Security', 'Computer Science', 'Public Policy', 'Data Analytics'],
-      estTuition: '$24,000 - $32,000 / yr',
-      tuitionBdt: 'BDT 29 - 39 Lakh / yr',
-      ieltsReq: '6.5',
-      pteReq: '59+',
-      scholarshipAvailable: 'Merit scholarships up to $12,000/yr',
-      intakes: ['Fall (August)', 'Spring (January)'],
-      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80'
-    },
-    {
-      id: 'ubuffalo',
-      name: 'University at Buffalo (SUNY)',
-      location: 'Buffalo, New York',
-      area: 'New York',
-      ranking: 'Flagship University of New York (AAU)',
-      type: 'Public',
-      popularMajors: ['Civil Engineering', 'Computer Science', 'Management', 'Pharmacy'],
-      estTuition: '$22,000 - $29,000 / yr',
-      tuitionBdt: 'BDT 26 - 35 Lakh / yr',
-      ieltsReq: '6.5',
-      pteReq: '55+',
-      scholarshipAvailable: 'International Provost Scholarship up to $10,000',
-      intakes: ['Fall (August)', 'Spring (January)'],
-      image: 'https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=600&q=80'
-    }
-  ],
+  universities: usaUniversities,
 
   documentChecklist: [
     {
