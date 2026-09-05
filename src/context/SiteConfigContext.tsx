@@ -195,8 +195,8 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
     youtubeUrl: 'https://youtube.com'
   },
   hero: {
-    eyebrowBadge: 'Bangladesh’s Trusted Study Abroad Platform',
-    eyebrowSubtext: '100% Free Counseling',
+    eyebrowBadge: 'More Than 12K+ Programs',
+    eyebrowSubtext: '',
     headline: 'Find the Right University.',
     headlineHighlight: 'Build Your Future Abroad.',
     subheadline: 'Empowering Bangladeshi students to discover verified courses, secure maximum scholarships, and get transparent visa guidance for USA, Canada, UK, Australia & Europe.',
@@ -280,7 +280,18 @@ export const SiteConfigProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             logoUrl: validLogoUrl
           },
           contact: { ...DEFAULT_SITE_CONFIG.contact, ...(parsed.contact || {}) },
-          hero: { ...DEFAULT_SITE_CONFIG.hero, ...(parsed.hero || {}) },
+          hero: { 
+            ...DEFAULT_SITE_CONFIG.hero, 
+            ...(parsed.hero || {}),
+            eyebrowBadge: (parsed.hero?.eyebrowBadge && parsed.hero.eyebrowBadge !== 'Bangladesh’s Trusted Study Abroad Platform')
+              ? parsed.hero.eyebrowBadge
+              : 'More Than 12K+ Programs',
+            eyebrowSubtext: (parsed.hero?.eyebrowSubtext && 
+              parsed.hero.eyebrowSubtext !== '100% Free Counseling' && 
+              parsed.hero.eyebrowSubtext !== '100% Free Counseling To More Than 12K+ Programs')
+              ? parsed.hero.eyebrowSubtext
+              : ''
+          },
           countries: { 
             ...DEFAULT_SITE_CONFIG.countries, 
             ...(parsed.countries || {}),

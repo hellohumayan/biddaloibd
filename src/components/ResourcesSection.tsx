@@ -10,8 +10,8 @@ export const ResourcesSection: React.FC = () => {
     <section id="resources" className="py-20 bg-[#F8FAFD] border-t border-slate-200/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        {/* Section Heading - Left Aligned */}
+        <div className="text-left max-w-3xl mb-12 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold mb-3">
             <Sparkles className="w-3.5 h-3.5 text-blue-600" />
             Knowledge Base
@@ -19,14 +19,14 @@ export const ResourcesSection: React.FC = () => {
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Learn Before You Apply
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 mt-2">
+          <p className="text-base sm:text-lg text-slate-600 mt-3 leading-relaxed">
             In-depth guides, visa blueprints, and expert admission strategies written specifically for Bangladeshi students.
           </p>
         </div>
 
-        {/* Resources Grid */}
+        {/* Resources Grid - Limited to Top 3 Featured Blogs */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {resourcesData.map((article) => (
+          {resourcesData.slice(0, 3).map((article) => (
             <div
               key={article.id}
               className="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-300 transition-all duration-300 flex flex-col justify-between overflow-hidden group"

@@ -2,6 +2,7 @@ export interface UniversityItem {
   id: string;
   name: string;
   location: string;
+  area?: string;
   ranking: string;
   type: 'Public' | 'Private' | 'Research';
   popularMajors: string[];

@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowRight, Phone, Lock } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Menu, X, ArrowRight, Phone, ChevronDown, Globe } from 'lucide-react';
 import { Logo } from './Logo';
+import { destinationsData } from '../data/destinations';
 
 interface NavbarProps {
   onOpenSearch?: () => void;
   onOpenLogin?: () => void;
   onOpenCounseling: () => void;
   onNavigateSection: (sectionId: string) => void;
-  onOpenAdmin?: () => void;
+  onNavigateToCountry?: (countryId: string) => void;
+  onNavigateAffiliate?: () => void;
+  onNavigatePartners?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -15,10 +18,16 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenLogin,
   onOpenCounseling,
   onNavigateSection,
-  onOpenAdmin
+  onNavigateToCountry,
+  onNavigateAffiliate,
+  onNavigatePartners
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isCountriesOpen, setIsCountriesOpen] = useState(false);
+  const [mobileCountriesOpen, setMobileCountriesOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,9 +41,30 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsCountriesOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setIsCountriesOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsCountriesOpen(false);
+    }, 150);
+  };
+
   const navLinks = [
     { label: 'Home', target: 'hero' },
-    { label: 'Study Abroad', target: 'destinations' },
     { label: 'Services', target: 'services' },
     { label: 'How It Works', target: 'how-it-works' },
     { label: 'Resources', target: 'resources' },
@@ -44,6 +74,17 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleNavClick = (target: string) => {
     onNavigateSection(target);
     setMobileMenuOpen(false);
+    setIsCountriesOpen(false);
+  };
+
+  const handleCountryClick = (countryId: string) => {
+    setIsCountriesOpen(false);
+    setMobileMenuOpen(false);
+    if (onNavigateToCountry) {
+      onNavigateToCountry(countryId);
+    } else {
+      onNavigateSection('countries');
+    }
   };
 
   return (
@@ -71,7 +112,87 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
-              {navLinks.map((link) => (
+              {/* Home */}
+              <button
+                type="button"
+                onClick={() => handleNavClick('hero')}
+                className="px-3 py-1.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-slate-50/80 rounded-lg transition-colors"
+              >
+                Home
+              </button>
+
+              {/* Countries Dropdown */}
+              <div
+                ref={dropdownRef}
+                className="relative"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <button
+                  type="button"
+                  onClick={() => setIsCountriesOpen(!isCountriesOpen)}
+                  className={`px-3 py-1.5 text-sm font-bold rounded-lg transition-colors inline-flex items-center gap-1.5 ${
+                    isCountriesOpen
+                      ? 'text-blue-600 bg-blue-50/80'
+                      : 'text-slate-800 hover:text-blue-600 hover:bg-slate-50/80'
+                  }`}
+                  aria-expanded={isCountriesOpen}
+                  aria-haspopup="true"
+                >
+                  <span>Countries</span>
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                      isCountriesOpen ? 'rotate-180 text-blue-600' : 'text-slate-400'
+                    }`}
+                  />
+                </button>
+
+                {/* Dropdown Menu */}
+                {isCountriesOpen && (
+                  <div className="absolute top-full left-0 mt-1.5 w-84 bg-white rounded-2xl shadow-xl border border-slate-200/90 p-3 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="flex items-center justify-between px-2.5 py-1.5 border-b border-slate-100 mb-2">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-1">
+                        <Globe className="w-3 h-3 text-blue-500" />
+                        Study Destinations
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleNavClick('destinations')}
+                        className="text-[11px] font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                      >
+                        <span>View All</span>
+                        <ArrowRight className="w-3 h-3" />
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-1">
+                      {destinationsData.map((country) => (
+                        <button
+                          key={country.id}
+                          type="button"
+                          onClick={() => handleCountryClick(country.id)}
+                          className="flex items-center gap-2.5 p-2 rounded-xl text-left hover:bg-blue-50/80 group transition-colors"
+                        >
+                          <span className="text-xl shrink-0" role="img" aria-label={country.name}>
+                            {country.flag}
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs font-bold text-slate-900 group-hover:text-blue-700 truncate">
+                              {country.name}
+                            </p>
+                            <p className="text-[10px] text-slate-400 truncate">
+                              {country.universityCount}+ Unis
+                            </p>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Other navigation links */}
+              {navLinks.slice(1).map((link) => (
                 <button
                   key={link.label}
                   onClick={() => handleNavClick(link.target)}
@@ -133,7 +254,58 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {/* Drawer Nav Links */}
               <div className="p-4 space-y-1">
-                {navLinks.map((link) => (
+                {/* Home */}
+                <button
+                  onClick={() => handleNavClick('hero')}
+                  className="w-full text-left px-3.5 py-2.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-blue-50/50 rounded-xl transition-colors flex items-center justify-between"
+                >
+                  <span>Home</span>
+                  <ArrowRight className="w-4 h-4 text-slate-300" />
+                </button>
+
+                {/* Countries Accordion */}
+                <div>
+                  <button
+                    onClick={() => setMobileCountriesOpen(!mobileCountriesOpen)}
+                    className="w-full text-left px-3.5 py-2.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-blue-50/50 rounded-xl transition-colors flex items-center justify-between"
+                  >
+                    <span>Countries</span>
+                    <ChevronDown
+                      className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                        mobileCountriesOpen ? 'rotate-180 text-blue-600' : ''
+                      }`}
+                    />
+                  </button>
+
+                  {mobileCountriesOpen && (
+                    <div className="pl-3 pr-2 py-1.5 space-y-1 bg-slate-50/80 rounded-xl mt-1 mb-2 border border-slate-100">
+                      <button
+                        onClick={() => {
+                          handleNavClick('destinations');
+                          setMobileCountriesOpen(false);
+                        }}
+                        className="w-full text-left px-3 py-2 text-xs font-bold text-blue-600 hover:bg-blue-100/50 rounded-lg transition-colors flex items-center justify-between"
+                      >
+                        <span>Explore All Countries</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                      {destinationsData.map((country) => (
+                        <button
+                          key={country.id}
+                          onClick={() => handleCountryClick(country.id)}
+                          className="w-full text-left px-3 py-2 text-xs font-semibold text-slate-800 hover:text-blue-600 hover:bg-white rounded-lg transition-colors flex items-center gap-2.5"
+                        >
+                          <span className="text-base">{country.flag}</span>
+                          <span className="flex-1 truncate">{country.name}</span>
+                          <span className="text-[10px] text-slate-400 font-normal">{country.code}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Other Nav Links */}
+                {navLinks.slice(1).map((link) => (
                   <button
                     key={link.label}
                     onClick={() => handleNavClick(link.target)}
@@ -167,20 +339,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>Dhaka Helpline: +880 1722-200432</span>
               </div>
               <p className="text-[11px] text-slate-500">Pallabi, Mirpur, Dhaka 1216</p>
-              {onOpenAdmin && (
-                <div className="pt-2 border-t border-slate-200/60">
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      onOpenAdmin();
-                    }}
-                    className="text-[11px] font-semibold text-slate-500 hover:text-blue-600 flex items-center gap-1.5 transition-colors cursor-pointer"
-                  >
-                    <Lock className="w-3 h-3 text-slate-400" />
-                    <span>Admin CMS Login</span>
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         </div>

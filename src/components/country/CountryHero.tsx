@@ -2,14 +2,9 @@ import React from 'react';
 import { 
   ArrowRight, 
   CheckCircle2, 
-  Calendar, 
-  Award, 
-  Briefcase, 
-  ShieldCheck, 
-  QrCode, 
-  Sparkles,
-  Smartphone,
-  ExternalLink
+  Radio, 
+  FileCheck, 
+  GraduationCap 
 } from 'lucide-react';
 import { CountryPageData } from '../../types/country';
 
@@ -23,199 +18,121 @@ interface CountryHeroProps {
 export const CountryHero: React.FC<CountryHeroProps> = ({
   country,
   onOpenCounseling,
-  onNavigateToSection,
-  onNavigateHome
+  onNavigateToSection
 }) => {
-  // Construct registration URL for the QR code
-  const registrationUrl = typeof window !== 'undefined' 
-    ? `${window.location.origin}/study-in-${country.id}#register` 
-    : `https://biddaloi.com/study-in-${country.id}`;
-
-  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(registrationUrl)}&margin=10&color=1d4ed8`;
-
   return (
-    <div className="relative bg-gradient-to-b from-slate-900 via-slate-900 to-blue-950 text-white pt-10 pb-16 lg:pb-20 overflow-hidden">
-      {/* Background Ambience & Flag Accent */}
-      <div 
-        className="absolute inset-0 opacity-15 bg-cover bg-center pointer-events-none mix-blend-luminosity"
-        style={{ backgroundImage: `url(${country.heroImage})` }}
-      />
-      <div className="absolute -top-32 -right-32 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
+    <section id="country-hero" className="relative pt-6 pb-14 md:pt-10 md:pb-20 overflow-hidden bg-gradient-to-b from-[#F0F5FD] via-[#F8FAFE] to-white">
+      {/* Background Decorative Glows */}
+      <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[320px] bg-blue-100/60 rounded-full blur-3xl -z-10 pointer-events-none" />
+      <div className="absolute top-36 right-4 w-64 h-64 bg-teal-100/50 rounded-full blur-2xl -z-10 pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Main Grid: Info Left, QR Registration Card Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           
-          {/* Left Column: Headings, Badges, CTAs */}
-          <div className="lg:col-span-7 space-y-6">
+          {/* LEFT COLUMN: Country Value Prop, Headlines & CTAs */}
+          <div className="lg:col-span-7 space-y-6 text-left">
             
-            {/* Country Badge */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs sm:text-sm font-bold backdrop-blur-md">
-              <span className="text-base sm:text-lg">{country.flag}</span>
-              <span>Study in {country.name} for Bangladeshi Students (2025/2026)</span>
+            {/* Trust Eyebrow Badge */}
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white border border-blue-200 shadow-xs max-w-full">
+              <span className="flex h-2.5 w-2.5 rounded-full bg-blue-600 animate-pulse flex-shrink-0" />
+              <span className="text-sm sm:text-base font-extrabold text-blue-900 tracking-tight flex items-center gap-1.5">
+                <span>{country.flag}</span>
+                <span>Study in {country.name}</span>
+              </span>
+              <span className="text-slate-300">•</span>
+              <span className="text-xs font-medium text-slate-600">2025/2026 Admissions Open</span>
             </div>
 
-            {/* Title & Tagline */}
-            <div className="space-y-3">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
-                Study In <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-indigo-200 to-sky-400">{country.id === 'usa' ? 'USA' : country.name}</span> From Bangladesh
-              </h1>
-              <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
-                {country.tagline}. {country.overview}
-              </p>
-            </div>
+            {/* Main Headline */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.12]">
+              Study in{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-700 to-teal-600">
+                {country.id === 'usa' ? 'USA' : country.name}
+              </span>{' '}
+              from Bangladesh
+            </h1>
 
-            {/* Key Quick Highlight Pills */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-              <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/80 rounded-xl p-3 text-left">
-                <div className="flex items-center gap-1.5 text-blue-400 text-xs font-semibold mb-1">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Visa Success</span>
-                </div>
-                <div className="text-sm font-bold text-white truncate">
-                  {country.heroStats.visaSuccessRate}
-                </div>
-              </div>
+            {/* Supporting Subheadline */}
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl font-normal">
+              {country.tagline}. {country.overview}
+            </p>
 
-              <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/80 rounded-xl p-3 text-left">
-                <div className="flex items-center gap-1.5 text-indigo-400 text-xs font-semibold mb-1">
-                  <Briefcase className="w-3.5 h-3.5" />
-                  <span>Post-Study Work</span>
-                </div>
-                <div className="text-sm font-bold text-white truncate">
-                  {country.heroStats.postStudyWork}
-                </div>
-              </div>
-
-              <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/80 rounded-xl p-3 text-left">
-                <div className="flex items-center gap-1.5 text-emerald-400 text-xs font-semibold mb-1">
-                  <Award className="w-3.5 h-3.5" />
-                  <span>Scholarships</span>
-                </div>
-                <div className="text-sm font-bold text-white truncate">
-                  {country.heroStats.scholarshipRange}
-                </div>
-              </div>
-
-              <div className="bg-slate-800/80 backdrop-blur-md border border-slate-700/80 rounded-xl p-3 text-left">
-                <div className="flex items-center gap-1.5 text-amber-400 text-xs font-semibold mb-1">
-                  <Calendar className="w-3.5 h-3.5" />
-                  <span>Next Intake</span>
-                </div>
-                <div className="text-sm font-bold text-white truncate">
-                  {country.heroStats.nextMajorIntake}
-                </div>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            {/* Primary Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
               <button
+                type="button"
                 onClick={() => onOpenCounseling(`Inquiry: Study in ${country.name}`)}
-                className="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm sm:text-base font-bold shadow-lg shadow-blue-600/30 transition-all transform active:scale-95 flex items-center gap-2"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-blue-600/25 transition-all transform active:scale-95 group cursor-pointer"
               >
                 <span>Book Free 1-on-1 Counseling</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
               <button
+                type="button"
                 onClick={() => onNavigateToSection('universities')}
-                className="px-5 py-3.5 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 text-slate-200 border border-slate-700 text-sm font-bold transition-colors flex items-center gap-2"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm sm:text-base border border-slate-300/80 shadow-xs transition-all hover:border-teal-500 cursor-pointer"
               >
+                <GraduationCap className="w-4 h-4 text-teal-600" />
                 <span>View Universities ({country.universities.length})</span>
               </button>
-
-              <button
-                onClick={() => onNavigateToSection('expenses')}
-                className="px-4 py-3.5 rounded-xl hover:bg-white/10 text-slate-300 text-xs sm:text-sm font-semibold transition-colors"
-              >
-                Tuition & Living Costs ↓
-              </button>
             </div>
+
           </div>
 
-          {/* Right Column: Hero QR Code Card for Student Registration */}
-          <div className="lg:col-span-5">
-            <div className="bg-white rounded-2xl p-6 sm:p-7 shadow-2xl text-slate-900 border border-slate-100 relative group overflow-hidden">
-              {/* Header inside QR card */}
-              <div className="flex items-start justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
-                <div>
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 text-xs font-bold mb-1.5">
-                    <Smartphone className="w-3.5 h-3.5 text-blue-600" />
-                    <span>Instant Mobile Registration</span>
-                  </div>
-                  <h2 className="text-lg sm:text-xl font-black text-slate-900 leading-tight">
-                    Scan QR Code to Register
-                  </h2>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Free profile evaluation & scholarship screening for {country.name}
-                  </p>
-                </div>
+          {/* RIGHT COLUMN: Realistic Visual & Floating Badges */}
+          <div className="lg:col-span-5 relative flex items-center justify-center">
+            <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+              
+              {/* Main Country Photo Showcase */}
+              <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-100 h-[460px] sm:h-[485px] lg:h-[495px] w-full">
+                <img
+                  src={country.heroImage}
+                  alt={`Bangladeshi Students in ${country.name}`}
+                  className="w-full h-full object-cover object-center"
+                  loading="eager"
+                />
                 
-                <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm">
-                  <QrCode className="w-5 h-5" />
+                {/* Subtle Gradient Overlays */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/10" />
+
+                {/* Bottom Card Inside Photo */}
+                <div className="absolute bottom-3.5 left-3.5 right-3.5 p-3 bg-white/95 backdrop-blur-md rounded-2xl shadow-md border border-white/80 flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-bold text-slate-900">{country.name} Admissions & Visa</p>
+                    <p className="text-[11px] text-slate-500 font-medium">Official Partner Universities</p>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0 shadow-xs" title="Visa Approved">
+                    <CheckCircle2 className="w-4 h-4" />
+                  </div>
                 </div>
               </div>
 
-              {/* Centered QR Code Image Display */}
-              <div className="flex flex-col items-center justify-center py-2">
-                <button
-                  onClick={() => onOpenCounseling(`QR Code Registration for ${country.name}`)}
-                  className="relative p-3 bg-white rounded-2xl border-2 border-dashed border-blue-200 hover:border-blue-500 shadow-xs transition-all hover:scale-[1.02] cursor-pointer group/qr"
-                  title="Click or scan to open registration"
-                >
-                  <img
-                    src={qrImageUrl}
-                    alt={`QR Code to Register for Study in ${country.name}`}
-                    className="w-48 h-48 sm:w-52 sm:h-52 object-contain rounded-xl"
-                    loading="eager"
-                  />
-                  
-                  {/* Subtle hover overlay indicating clickability */}
-                  <div className="absolute inset-0 bg-blue-900/10 rounded-2xl opacity-0 group-hover/qr:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1">
-                      <span>Click to Register</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </span>
-                  </div>
-                </button>
-
-                <p className="text-[11px] text-slate-400 mt-3 text-center max-w-xs leading-normal">
-                  Point your smartphone camera at this QR code to register in 60 seconds, or click directly.
-                </p>
+              {/* Floating Badge 1: Top Left - Biddaloi Update */}
+              <div className="hidden sm:flex absolute -top-3 -left-4 px-3 py-2 bg-white/95 backdrop-blur-md rounded-2xl shadow-lg border border-slate-100 items-center gap-2">
+                <div className="w-6 h-6 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+                  <Radio className="w-3.5 h-3.5 animate-pulse" />
+                </div>
+                <p className="text-xs font-bold text-slate-900">Biddaloi Update</p>
               </div>
 
-              {/* Quick direct button under QR code */}
-              <div className="mt-4 pt-4 border-t border-slate-100">
-                <button
-                  onClick={() => onOpenCounseling(`Online Registration: ${country.name}`)}
-                  className="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-blue-600/20 transition-all flex items-center justify-center gap-2"
-                >
-                  <span>Register Profile Online Now</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-
-                <div className="flex items-center justify-center gap-4 mt-3 text-[11px] text-slate-500">
-                  <span className="flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                    <span>100% Free Assessment</span>
-                  </span>
-                  <span>•</span>
-                  <span className="flex items-center gap-1">
-                    <Sparkles className="w-3 h-3 text-amber-500" />
-                    <span>Direct WhatsApp Call</span>
-                  </span>
+              {/* Floating Badge 2: Middle Right - Visa Approved */}
+              <div className="absolute top-1/2 -right-3 -translate-y-1/2 px-3 py-2 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-100 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <FileCheck className="w-3.5 h-3.5" />
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <p className="text-xs font-bold text-slate-900">Visa Approved</p>
                 </div>
               </div>
 
             </div>
+
           </div>
 
         </div>
-
       </div>
-    </div>
+    </section>
   );
 };

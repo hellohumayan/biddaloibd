@@ -29,8 +29,8 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onStartJourney, onWatchV
     <section id="how-it-works" className="py-20 bg-[#F8FAFD] border-y border-slate-200/60 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        {/* Section Heading - Left Aligned */}
+        <div className="text-left max-w-3xl mb-12 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-bold mb-3">
             <Sparkles className="w-3.5 h-3.5 text-blue-600" />
             <span>{howItWorks.badge || 'Simple 4-Step Journey'}</span>
@@ -38,7 +38,7 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onStartJourney, onWatchV
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             {howItWorks.title || 'Your Road to Abroad'}
           </h2>
-          <p className="text-sm sm:text-base text-slate-600 mt-2.5">
+          <p className="text-base sm:text-lg text-slate-600 mt-3 leading-relaxed">
             {howItWorks.description}
           </p>
         </div>

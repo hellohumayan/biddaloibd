@@ -25,6 +25,12 @@ import { LiveClassesModal } from './components/LiveClassesModal';
 import { CountryPage } from './components/country/CountryPage';
 import { getCountryData } from './data/countryData';
 
+// Affiliate Page
+import { AffiliatePage } from './components/affiliate/AffiliatePage';
+
+// Partners Page
+import { PartnersPage } from './components/partners/PartnersPage';
+
 import { Course } from './types';
 
 interface MainWebsiteProps {
@@ -36,7 +42,8 @@ interface MainWebsiteProps {
   onViewCourse: (course: Course) => void;
   onCheckEligibility: (course: Course) => void;
   onWatchVideos: () => void;
-  onOpenAdmin: () => void;
+  onNavigateAffiliate?: () => void;
+  onNavigatePartners?: () => void;
 }
 
 function MainWebsite({ 
@@ -48,7 +55,8 @@ function MainWebsite({
   onViewCourse,
   onCheckEligibility,
   onWatchVideos,
-  onOpenAdmin
+  onNavigateAffiliate,
+  onNavigatePartners
 }: MainWebsiteProps) {
   // Filter state synchronized between sections
   const [selectedDestination, setSelectedDestination] = useState<string>('all');
@@ -75,7 +83,9 @@ function MainWebsite({
         onOpenLogin={onOpenLogin}
         onOpenCounseling={() => onOpenCounselingWithCountry()}
         onNavigateSection={scrollToSection}
-        onOpenAdmin={onOpenAdmin}
+        onNavigateToCountry={onNavigateToCountry}
+        onNavigateAffiliate={onNavigateAffiliate}
+        onNavigatePartners={onNavigatePartners}
       />
 
       {/* Main Content Sections */}
@@ -120,7 +130,8 @@ function MainWebsite({
         onNavigateSection={scrollToSection}
         onFilterDestination={handleSelectDestination}
         onNavigateToCountry={onNavigateToCountry}
-        onOpenAdmin={onOpenAdmin}
+        onNavigateToAffiliate={onNavigateAffiliate}
+        onNavigateToPartners={onNavigatePartners}
       />
 
       {/* Mobile Sticky Bottom CTA Bar */}
@@ -133,7 +144,7 @@ function MainWebsite({
 }
 
 interface RouteState {
-  view: 'home' | 'admin' | 'country';
+  view: 'home' | 'admin' | 'country' | 'affiliate' | 'partners';
   countryParam: string | null;
 }
 
@@ -152,6 +163,35 @@ function resolveCurrentRoute(): RouteState {
     search.get('view') === 'admin'
   ) {
     return { view: 'admin', countryParam: null };
+  }
+
+  // Affiliate route check: /affiliate, /affiliate/, #affiliate, ?affiliate, ?view=affiliate
+  if (
+    path === 'affiliate' ||
+    path.startsWith('affiliate/') ||
+    hash === 'affiliate' ||
+    hash.startsWith('affiliate/') ||
+    search.has('affiliate') ||
+    search.get('view') === 'affiliate'
+  ) {
+    return { view: 'affiliate', countryParam: null };
+  }
+
+  // Partners route check: /partners, /partner, #partners, ?partners, ?view=partners
+  if (
+    path === 'partners' ||
+    path === 'partner' ||
+    path.startsWith('partners/') ||
+    path.startsWith('partner/') ||
+    hash === 'partners' ||
+    hash === 'partner' ||
+    hash.startsWith('partners/') ||
+    search.has('partners') ||
+    search.has('partner') ||
+    search.get('view') === 'partners' ||
+    search.get('view') === 'partner'
+  ) {
+    return { view: 'partners', countryParam: null };
   }
 
   // Country route check: /study-in-xyz or #study-in-xyz or ?country=xyz
@@ -243,6 +283,18 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  const handleNavigateAffiliate = useCallback(() => {
+    window.history.pushState({}, '', '/affiliate');
+    setRoute({ view: 'affiliate', countryParam: null });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const handleNavigatePartners = useCallback(() => {
+    window.history.pushState({}, '', '/partners');
+    setRoute({ view: 'partners', countryParam: null });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const handleNavigateToCountry = useCallback((countryIdOrSlug: string) => {
     const cleanId = countryIdOrSlug.replace(/^study-in-/, '');
     const slug = `study-in-${cleanId}`;
@@ -292,7 +344,28 @@ export default function App() {
           onOpenCounseling={(notes) => handleOpenCounseling(countryData.id, notes)}
           onOpenSearch={() => setIsSearchOpen(true)}
           onOpenLogin={() => setIsAuthOpen(true)}
-          onOpenAdmin={handleNavigateAdmin}
+          onNavigateAffiliate={handleNavigateAffiliate}
+          onNavigatePartners={handleNavigatePartners}
+        />
+      ) : route.view === 'affiliate' ? (
+        <AffiliatePage
+          onNavigateHome={handleNavigateHome}
+          onNavigateSection={handleNavigateSectionFromCountry}
+          onNavigateToCountry={handleNavigateToCountry}
+          onNavigateToPartners={handleNavigatePartners}
+          onOpenCounseling={(notes) => handleOpenCounseling(undefined, notes)}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenLogin={() => setIsAuthOpen(true)}
+        />
+      ) : route.view === 'partners' ? (
+        <PartnersPage
+          onNavigateHome={handleNavigateHome}
+          onNavigateSection={handleNavigateSectionFromCountry}
+          onNavigateToCountry={handleNavigateToCountry}
+          onNavigateToAffiliate={handleNavigateAffiliate}
+          onOpenCounseling={(notes) => handleOpenCounseling(undefined, notes)}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenLogin={() => setIsAuthOpen(true)}
         />
       ) : (
         <MainWebsite 
@@ -310,7 +383,8 @@ export default function App() {
             setIsEligibilityOpen(true);
           }}
           onWatchVideos={() => setIsLiveClassesOpen(true)}
-          onOpenAdmin={handleNavigateAdmin}
+          onNavigateAffiliate={handleNavigateAffiliate}
+          onNavigatePartners={handleNavigatePartners}
         />
       )}
 
@@ -362,7 +436,6 @@ export default function App() {
       <AuthModal
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
-        onOpenAdmin={handleNavigateAdmin}
       />
 
       <LiveClassesModal

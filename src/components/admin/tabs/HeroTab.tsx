@@ -31,20 +31,20 @@ export const HeroTab: React.FC = () => {
               type="text"
               value={hero.eyebrowBadge}
               onChange={(e) => handleChange('eyebrowBadge', e.target.value)}
-              placeholder="Bangladesh’s Trusted Study Abroad Platform"
+              placeholder="More Than 12K+ Programs"
               className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-1">
-              Top Badge Sub-pill Text
+              Top Badge Sub-pill Text (Optional)
             </label>
             <input
               type="text"
               value={hero.eyebrowSubtext}
               onChange={(e) => handleChange('eyebrowSubtext', e.target.value)}
-              placeholder="100% Free Counseling"
+              placeholder="Leave empty or enter optional text"
               className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>

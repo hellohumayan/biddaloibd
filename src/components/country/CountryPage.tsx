@@ -25,7 +25,8 @@ interface CountryPageProps {
   onOpenCounseling: (notes?: string) => void;
   onOpenSearch?: () => void;
   onOpenLogin?: () => void;
-  onOpenAdmin?: () => void;
+  onNavigateAffiliate?: () => void;
+  onNavigatePartners?: () => void;
 }
 
 export const CountryPage: React.FC<CountryPageProps> = ({
@@ -36,7 +37,8 @@ export const CountryPage: React.FC<CountryPageProps> = ({
   onOpenCounseling,
   onOpenSearch,
   onOpenLogin,
-  onOpenAdmin
+  onNavigateAffiliate,
+  onNavigatePartners
 }) => {
   const { config } = useSiteConfig();
 
@@ -72,7 +74,9 @@ export const CountryPage: React.FC<CountryPageProps> = ({
         onOpenLogin={onOpenLogin}
         onOpenCounseling={() => onOpenCounseling(`Direct Application: Study in ${country.name}`)}
         onNavigateSection={onNavigateSection}
-        onOpenAdmin={onOpenAdmin}
+        onNavigateToCountry={onSelectCountrySlug}
+        onNavigateAffiliate={onNavigateAffiliate}
+        onNavigatePartners={onNavigatePartners}
       />
 
       {/* Main Content Body */}
@@ -181,7 +185,8 @@ export const CountryPage: React.FC<CountryPageProps> = ({
         onNavigateSection={onNavigateSection}
         onFilterDestination={(destId) => onSelectCountrySlug(`study-in-${destId}`)}
         onNavigateToCountry={(destId) => onSelectCountrySlug(`study-in-${destId}`)}
-        onOpenAdmin={onOpenAdmin}
+        onNavigateToAffiliate={onNavigateAffiliate}
+        onNavigateToPartners={onNavigatePartners}
       />
 
       {/* Mobile Sticky Bottom CTA Bar */}
