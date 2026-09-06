@@ -33,7 +33,7 @@ export const ContactTab: React.FC = () => {
               type="text"
               value={contact.phone}
               onChange={(e) => handleChange('phone', e.target.value)}
-              placeholder="+880 1712-345678"
+              placeholder="+8801710002801"
               className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
             />
           </div>
@@ -48,7 +48,7 @@ export const ContactTab: React.FC = () => {
               type="text"
               value={contact.whatsapp}
               onChange={(e) => handleChange('whatsapp', e.target.value)}
-              placeholder="+880 1712-345678"
+              placeholder="+8801710002801"
               className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
             />
           </div>
@@ -63,7 +63,7 @@ export const ContactTab: React.FC = () => {
               type="email"
               value={contact.email}
               onChange={(e) => handleChange('email', e.target.value)}
-              placeholder="counseling@biddaloi.com"
+              placeholder="hello@biddaloi.com"
               className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
             />
           </div>
@@ -94,7 +94,7 @@ export const ContactTab: React.FC = () => {
             rows={3}
             value={contact.address}
             onChange={(e) => handleChange('address', e.target.value)}
-            placeholder="House 42, Road 11, Block D, Banani, Dhaka-1213, Bangladesh"
+            placeholder="House No - 124, Raninagor, Monnafer Mor, Rajshahi"
             className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
           />
         </div>

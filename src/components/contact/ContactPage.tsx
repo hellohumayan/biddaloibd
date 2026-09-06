@@ -172,10 +172,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
   const { config } = useSiteConfig();
 
   // Verified contact constants (with fallback to site config)
-  const VERIFIED_PHONE = config.contact.phone || '+880 1722-200432';
-  const VERIFIED_WHATSAPP = config.contact.whatsapp || '+880 1722-200432';
-  const VERIFIED_EMAIL = config.contact.email || 'counseling@biddaloi.com';
-  const VERIFIED_ADDRESS = 'House #3(6/B), Road #7, Section #11, Mirpur, Dhaka-1216, Bangladesh';
+  const VERIFIED_PHONE = config.contact.phone || '+8801710002801';
+  const VERIFIED_WHATSAPP = config.contact.whatsapp || '+8801710002801';
+  const VERIFIED_EMAIL = config.contact.email || 'hello@biddaloi.com';
+  const VERIFIED_ADDRESS = config.contact.address || 'House No - 124, Raninagor, Monnafer Mor, Rajshahi';
   const VERIFIED_HOURS = config.contact.officeHours || 'Saturday – Thursday: 10:00 AM – 7:00 PM (BST)';
 
   // SEO metadata setup
@@ -713,7 +713,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                     Visit our office for an in-person discussion with the Biddaloi team.
                   </p>
                   <div className="py-2 px-3 bg-white rounded-lg border border-slate-200 text-xs font-semibold text-slate-800 mb-4 truncate" title={VERIFIED_ADDRESS}>
-                    Mirpur-11, Dhaka, Bangladesh
+                    {VERIFIED_ADDRESS}
                   </div>
                 </div>
                 <a
@@ -1548,10 +1548,10 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 </div>
                 <div className="pt-2 border-t border-slate-200">
                   <a
-                    href="mailto:counseling@biddaloi.com"
+                    href={`mailto:${VERIFIED_EMAIL}`}
                     className="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1"
                   >
-                    <span>counseling@biddaloi.com</span>
+                    <span>{VERIFIED_EMAIL}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </a>
                 </div>

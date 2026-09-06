@@ -20,6 +20,7 @@ import { EligibilityModal } from './components/EligibilityModal';
 import { SearchModal } from './components/SearchModal';
 import { AuthModal } from './components/AuthModal';
 import { LiveClassesModal } from './components/LiveClassesModal';
+import { LegalPolicyModal, LegalPolicyTab } from './components/LegalPolicyModal';
 
 // Country Page & Data
 import { CountryPage } from './components/country/CountryPage';
@@ -60,6 +61,7 @@ interface MainWebsiteProps {
   onNavigateBlog?: (articleId?: string) => void;
   onNavigateAbout?: () => void;
   onNavigateContact?: () => void;
+  onOpenLegal?: (tab: LegalPolicyTab) => void;
 }
 
 function MainWebsite({ 
@@ -75,7 +77,8 @@ function MainWebsite({
   onNavigatePartners,
   onNavigateBlog,
   onNavigateAbout,
-  onNavigateContact
+  onNavigateContact,
+  onOpenLegal
 }: MainWebsiteProps) {
   // Filter state synchronized between sections
   const [selectedDestination, setSelectedDestination] = useState<string>('all');
@@ -177,6 +180,8 @@ function MainWebsite({
         onNavigateToCountry={onNavigateToCountry}
         onNavigateToAffiliate={onNavigateAffiliate}
         onNavigateToPartners={onNavigatePartners}
+        onOpenLegal={onOpenLegal}
+        onNavigateContact={onNavigateContact}
       />
 
       {/* Mobile Sticky Bottom CTA Bar */}
@@ -192,12 +197,45 @@ interface RouteState {
   view: 'home' | 'admin' | 'country' | 'affiliate' | 'partners' | 'ielts-roadmap' | 'blog' | 'about' | 'contact';
   countryParam: string | null;
   articleParam?: string | null;
+  legalParam?: LegalPolicyTab | null;
 }
 
 function resolveCurrentRoute(): RouteState {
   const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
   const hash = window.location.hash.replace(/^#\/?/, '');
   const search = new URLSearchParams(window.location.search);
+
+  // Legal & policy routes check: /terms, /refund-policy, /sitemap, /privacy-policy
+  let legalParam: LegalPolicyTab | null = null;
+  if (
+    path === 'terms' || path === 'terms-and-conditions' ||
+    hash === 'terms' || hash === 'terms-and-conditions' ||
+    search.has('terms') || search.get('view') === 'terms'
+  ) {
+    legalParam = 'terms';
+  } else if (
+    path === 'refund' || path === 'refund-policy' || path === 'refunds' ||
+    hash === 'refund' || hash === 'refund-policy' ||
+    search.has('refund') || search.get('view') === 'refund-policy'
+  ) {
+    legalParam = 'refund';
+  } else if (
+    path === 'sitemap' || path === 'site-map' ||
+    hash === 'sitemap' || hash === 'site-map' ||
+    search.has('sitemap') || search.get('view') === 'sitemap'
+  ) {
+    legalParam = 'sitemap';
+  } else if (
+    path === 'privacy' || path === 'privacy-policy' ||
+    hash === 'privacy' || hash === 'privacy-policy' ||
+    search.has('privacy') || search.get('view') === 'privacy'
+  ) {
+    legalParam = 'privacy';
+  }
+
+  if (legalParam) {
+    return { view: 'home', countryParam: null, legalParam };
+  }
 
   // Admin route check: supports /admin, /admin/, #admin, ?admin, ?view=admin
   if (
@@ -350,6 +388,7 @@ function resolveCurrentRoute(): RouteState {
 
 export default function App() {
   const [route, setRoute] = useState<RouteState>(() => resolveCurrentRoute());
+  const [legalModalTab, setLegalModalTab] = useState<LegalPolicyTab | null>(() => resolveCurrentRoute().legalParam || null);
 
   // Global modal states shared across Home and Country pages
   const [isCounselingOpen, setIsCounselingOpen] = useState(false);
@@ -368,7 +407,11 @@ export default function App() {
 
   useEffect(() => {
     const handleRouteChange = () => {
-      setRoute(resolveCurrentRoute());
+      const resolved = resolveCurrentRoute();
+      setRoute(resolved);
+      if (resolved.legalParam) {
+        setLegalModalTab(resolved.legalParam);
+      }
     };
 
     window.addEventListener('popstate', handleRouteChange);
@@ -512,6 +555,20 @@ export default function App() {
     handleNavigateContact();
   }, [handleNavigateContact]);
 
+  const handleOpenLegal = useCallback((tab: LegalPolicyTab) => {
+    const slug = tab === 'terms' ? 'terms' : tab === 'refund' ? 'refund-policy' : tab === 'sitemap' ? 'sitemap' : 'privacy-policy';
+    window.history.pushState({}, '', `/${slug}`);
+    setLegalModalTab(tab);
+  }, []);
+
+  const handleCloseLegal = useCallback(() => {
+    setLegalModalTab(null);
+    const p = window.location.pathname.replace(/^\/+|\/+$/g, '');
+    if (['terms', 'terms-and-conditions', 'refund', 'refund-policy', 'refunds', 'sitemap', 'site-map', 'privacy', 'privacy-policy'].includes(p)) {
+      window.history.pushState({}, '', '/');
+    }
+  }, []);
+
   // Country view resolution
   const countryData = route.view === 'country' && route.countryParam 
     ? getCountryData(route.countryParam) 
@@ -629,10 +686,24 @@ export default function App() {
           onNavigateBlog={handleNavigateBlog}
           onNavigateAbout={handleNavigateAbout}
           onNavigateContact={handleNavigateContact}
+          onOpenLegal={handleOpenLegal}
         />
       )}
 
       {/* Global Modals: Accessible across Home and Country pages */}
+      <LegalPolicyModal
+        isOpen={!!legalModalTab}
+        onClose={handleCloseLegal}
+        initialTab={legalModalTab || 'terms'}
+        onNavigateToCountry={handleNavigateToCountry}
+        onNavigateAffiliate={handleNavigateAffiliate}
+        onNavigatePartners={handleNavigatePartners}
+        onNavigateBlog={handleNavigateBlog}
+        onNavigateAbout={handleNavigateAbout}
+        onNavigateContact={handleNavigateContact}
+        onNavigateIeltsRoadmap={handleNavigateIeltsRoadmap}
+      />
+
       <CounselingModal
         isOpen={isCounselingOpen}
         onClose={() => setIsCounselingOpen(false)}

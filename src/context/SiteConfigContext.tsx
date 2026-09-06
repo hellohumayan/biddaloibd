@@ -185,10 +185,10 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
     logoAlt: 'Biddaloi Study Abroad Logo'
   },
   contact: {
-    phone: '+880 1712-345678',
-    whatsapp: '+880 1712-345678',
-    email: 'counseling@biddaloi.com',
-    address: 'House 42, Road 11, Block D, Banani, Dhaka-1213, Bangladesh',
+    phone: '+8801710002801',
+    whatsapp: '+8801710002801',
+    email: 'hello@biddaloi.com',
+    address: 'House No - 124, Raninagor, Monnafer Mor, Rajshahi',
     officeHours: 'Saturday – Thursday: 10:00 AM – 7:00 PM',
     facebookUrl: 'https://facebook.com',
     linkedinUrl: 'https://linkedin.com',
@@ -279,7 +279,22 @@ export const SiteConfigProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             ...(parsed.branding || {}),
             logoUrl: validLogoUrl
           },
-          contact: { ...DEFAULT_SITE_CONFIG.contact, ...(parsed.contact || {}) },
+          contact: { 
+            ...DEFAULT_SITE_CONFIG.contact, 
+            ...(parsed.contact || {}),
+            address: (!parsed.contact?.address || parsed.contact.address === 'House 42, Road 11, Block D, Banani, Dhaka-1213, Bangladesh')
+              ? DEFAULT_SITE_CONFIG.contact.address
+              : parsed.contact.address,
+            phone: (!parsed.contact?.phone || parsed.contact.phone === '+880 1712-345678')
+              ? DEFAULT_SITE_CONFIG.contact.phone
+              : parsed.contact.phone,
+            whatsapp: (!parsed.contact?.whatsapp || parsed.contact.whatsapp === '+880 1712-345678')
+              ? DEFAULT_SITE_CONFIG.contact.whatsapp
+              : parsed.contact.whatsapp,
+            email: (!parsed.contact?.email || parsed.contact.email === 'counseling@biddaloi.com')
+              ? DEFAULT_SITE_CONFIG.contact.email
+              : parsed.contact.email,
+          },
           hero: { 
             ...DEFAULT_SITE_CONFIG.hero, 
             ...(parsed.hero || {}),

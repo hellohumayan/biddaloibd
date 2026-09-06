@@ -22,6 +22,8 @@ interface FooterProps {
   onNavigateToAffiliate?: () => void;
   onNavigateToPartners?: () => void;
   onOpenCounseling?: () => void;
+  onOpenLegal?: (tab: 'terms' | 'refund' | 'sitemap' | 'privacy') => void;
+  onNavigateContact?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -30,11 +32,23 @@ export const Footer: React.FC<FooterProps> = ({
   onNavigateToCountry,
   onNavigateToAffiliate,
   onNavigateToPartners,
-  onOpenCounseling
+  onOpenCounseling,
+  onOpenLegal,
+  onNavigateContact
 }) => {
   const { config } = useSiteConfig();
   const contact = config.contact;
   const branding = config.branding;
+
+  const displayAddress = (!contact.address || contact.address.includes('Banani'))
+    ? 'House No - 124, Raninagor, Monnafer Mor, Rajshahi'
+    : contact.address;
+  const displayPhone = (!contact.phone || contact.phone.includes('1712-345678'))
+    ? '+8801710002801'
+    : contact.phone;
+  const displayEmail = (!contact.email || contact.email.includes('counseling@biddaloi.com'))
+    ? 'hello@biddaloi.com'
+    : contact.email;
 
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
@@ -65,15 +79,19 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="space-y-2 pt-1 text-xs text-slate-400">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
-                <span>{contact.address}</span>
+                <span>{displayAddress}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-teal-400 flex-shrink-0" />
-                <span>{contact.phone}</span>
+                <a href={`tel:${displayPhone}`} className="hover:text-teal-300 transition-colors">
+                  {displayPhone}
+                </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span>{contact.email}</span>
+                <a href={`mailto:${displayEmail}`} className="hover:text-amber-300 transition-colors">
+                  {displayEmail}
+                </a>
               </div>
             </div>
 
@@ -210,12 +228,9 @@ export const Footer: React.FC<FooterProps> = ({
                       window.dispatchEvent(new PopStateEvent('popstate'));
                     }
                   }} 
-                  className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors cursor-pointer"
                 >
-                  <span>Affiliate Program</span>
-                  <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-extrabold">
-                    $100–$1,000 USD
-                  </span>
+                  Affiliate Program
                 </button>
               </li>
               <li>
@@ -228,12 +243,9 @@ export const Footer: React.FC<FooterProps> = ({
                       window.dispatchEvent(new PopStateEvent('popstate'));
                     }
                   }} 
-                  className="text-teal-400 hover:text-teal-300 font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="text-teal-400 hover:text-teal-300 font-bold transition-colors cursor-pointer"
                 >
-                  <span>B2B Partners</span>
-                  <span className="text-[10px] bg-teal-500/20 text-teal-300 px-1.5 py-0.5 rounded font-extrabold">
-                    Upto 75% Share
-                  </span>
+                  B2B Partners
                 </button>
               </li>
               <li>
@@ -247,19 +259,49 @@ export const Footer: React.FC<FooterProps> = ({
                 </button>
               </li>
               <li>
-                <span className="text-slate-400 hover:text-slate-200 cursor-pointer">
+                <button 
+                  onClick={() => {
+                    if (onNavigateContact) {
+                      onNavigateContact();
+                    } else {
+                      window.history.pushState({}, '', '/contact');
+                      window.dispatchEvent(new PopStateEvent('popstate'));
+                    }
+                  }}
+                  className="text-slate-400 hover:text-blue-400 transition-colors cursor-pointer text-left"
+                >
                   Contact Us
-                </span>
+                </button>
               </li>
               <li>
-                <span className="text-slate-400 hover:text-slate-200 cursor-pointer">
+                <button 
+                  onClick={() => {
+                    if (onOpenLegal) {
+                      onOpenLegal('privacy');
+                    } else {
+                      window.history.pushState({}, '', '/privacy-policy');
+                      window.dispatchEvent(new PopStateEvent('popstate'));
+                    }
+                  }}
+                  className="text-slate-400 hover:text-blue-400 transition-colors cursor-pointer text-left"
+                >
                   Privacy Policy
-                </span>
+                </button>
               </li>
               <li>
-                <span className="text-slate-400 hover:text-slate-200 cursor-pointer">
+                <button 
+                  onClick={() => {
+                    if (onOpenLegal) {
+                      onOpenLegal('terms');
+                    } else {
+                      window.history.pushState({}, '', '/terms');
+                      window.dispatchEvent(new PopStateEvent('popstate'));
+                    }
+                  }}
+                  className="text-slate-400 hover:text-blue-400 transition-colors cursor-pointer text-left"
+                >
                   Terms & Conditions
-                </span>
+                </button>
               </li>
             </ul>
           </div>
@@ -301,11 +343,55 @@ export const Footer: React.FC<FooterProps> = ({
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} Biddaloi.com. All rights reserved. Dhaka, Bangladesh.</p>
-          <div className="flex items-center gap-4 text-[11px]">
-            <span>Verified EdTech Platform</span>
-            <span>•</span>
-            <span>Mirpur Section 11, Dhaka</span>
+          <p>© 2026 Biddaloi LLC. All Rights Reserved.</p>
+          <div className="flex items-center gap-3 sm:gap-4 text-xs">
+            <a
+              href="/terms"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onOpenLegal) {
+                  onOpenLegal('terms');
+                } else {
+                  window.history.pushState({}, '', '/terms');
+                  window.dispatchEvent(new PopStateEvent('popstate'));
+                }
+              }}
+              className="text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+            >
+              Terms & Conditions
+            </a>
+            <span className="text-slate-600">•</span>
+            <a
+              href="/refund-policy"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onOpenLegal) {
+                  onOpenLegal('refund');
+                } else {
+                  window.history.pushState({}, '', '/refund-policy');
+                  window.dispatchEvent(new PopStateEvent('popstate'));
+                }
+              }}
+              className="text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+            >
+              Refund Policy
+            </a>
+            <span className="text-slate-600">•</span>
+            <a
+              href="/sitemap"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onOpenLegal) {
+                  onOpenLegal('sitemap');
+                } else {
+                  window.history.pushState({}, '', '/sitemap');
+                  window.dispatchEvent(new PopStateEvent('popstate'));
+                }
+              }}
+              className="text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
+            >
+              Site Map
+            </a>
           </div>
         </div>
 
