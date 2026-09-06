@@ -4,9 +4,11 @@ export type StudyDestinationId =
   | 'uk' 
   | 'australia' 
   | 'germany' 
+  | 'europe'
   | 'malaysia' 
   | 'uae' 
-  | 'india';
+  | 'india'
+  | 'china';
 
 export type StudyLevel = "Bachelor's" | "Master's" | "PhD" | "Foundation / Diploma";
 

@@ -106,40 +106,54 @@ function MainWebsite({
     onOpenCounselingWithCountry(destId);
   };
 
+  const handleContactAction = () => {
+    if (onNavigateContact) {
+      onNavigateContact();
+    } else {
+      onOpenCounselingWithCountry();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white pb-20 md:pb-0">
       {/* Header & Navigation */}
       <Navbar
         onOpenSearch={onOpenSearch}
         onOpenLogin={onOpenLogin}
-        onOpenCounseling={() => onOpenCounselingWithCountry()}
+        onOpenCounseling={handleContactAction}
         onNavigateSection={scrollToSection}
         onNavigateToCountry={onNavigateToCountry}
         onNavigateAffiliate={onNavigateAffiliate}
         onNavigatePartners={onNavigatePartners}
+        onNavigateHome={() => scrollToSection('hero')}
+        onNavigateBlog={onNavigateBlog}
+        onNavigateAbout={onNavigateAbout}
+        onNavigateContact={onNavigateContact}
       />
 
       {/* Main Content Sections */}
       <main>
         {/* 1. Hero Section */}
         <Hero
-          onFindCourse={() => onOpenCounselingWithCountry()}
-          onTalkCounselor={() => onOpenCounselingWithCountry()}
+          onFindCourse={handleContactAction}
+          onTalkCounselor={handleContactAction}
+          onNavigateContact={onNavigateContact}
         />
 
         {/* 2. Countries We Are Connected With */}
         <ConnectedCountries
           onSelectCountry={(countryId) => handleSelectDestination(countryId)}
-          onOpenCounseling={(countryId) => onOpenCounselingWithCountry(countryId)}
+          onOpenCounseling={() => handleContactAction()}
           onNavigateToCountry={onNavigateToCountry}
+          onNavigateContact={onNavigateContact}
         />
 
         {/* 3. Why Biddaloi: Benefits & Advantages */}
-        <WhyBiddaloi onOpenCounseling={() => onOpenCounselingWithCountry()} />
+        <WhyBiddaloi onOpenCounseling={handleContactAction} />
 
         {/* 4. How It Works: Step-by-Step Road to Abroad */}
         <HowItWorks 
-          onStartJourney={() => onOpenCounselingWithCountry()} 
+          onStartJourney={handleContactAction} 
           onWatchVideos={onWatchVideos}
         />
 
@@ -151,8 +165,8 @@ function MainWebsite({
 
         {/* 7. Final High-Conversion CTA Banner */}
         <FinalCTA
-          onFindCourse={() => onOpenCounselingWithCountry()}
-          onTalkCounselor={() => onOpenCounselingWithCountry()}
+          onFindCourse={handleContactAction}
+          onTalkCounselor={handleContactAction}
         />
       </main>
 
@@ -167,8 +181,8 @@ function MainWebsite({
 
       {/* Mobile Sticky Bottom CTA Bar */}
       <MobileStickyBar
-        onFindCourse={() => onOpenCounselingWithCountry()}
-        onTalkCounselor={() => onOpenCounselingWithCountry()}
+        onFindCourse={handleContactAction}
+        onTalkCounselor={handleContactAction}
       />
     </div>
   );
@@ -494,8 +508,9 @@ export default function App() {
       setCounselingDestination(cleanId);
     }
     setCounselingCourseTitle(courseTitle || '');
-    setIsCounselingOpen(true);
-  }, []);
+    // Direct all form triggers to Contact Page
+    handleNavigateContact();
+  }, [handleNavigateContact]);
 
   // Country view resolution
   const countryData = route.view === 'country' && route.countryParam 
@@ -512,11 +527,14 @@ export default function App() {
           onNavigateHome={handleNavigateHome}
           onNavigateSection={handleNavigateSectionFromCountry}
           onSelectCountrySlug={handleNavigateToCountry}
-          onOpenCounseling={(notes) => handleOpenCounseling(countryData.id, notes)}
+          onOpenCounseling={() => handleNavigateContact()}
           onOpenSearch={() => setIsSearchOpen(true)}
           onOpenLogin={() => setIsAuthOpen(true)}
           onNavigateAffiliate={handleNavigateAffiliate}
           onNavigatePartners={handleNavigatePartners}
+          onNavigateBlog={handleNavigateBlog}
+          onNavigateAbout={handleNavigateAbout}
+          onNavigateContact={handleNavigateContact}
         />
       ) : route.view === 'affiliate' ? (
         <AffiliatePage
@@ -524,7 +542,7 @@ export default function App() {
           onNavigateSection={handleNavigateSectionFromCountry}
           onNavigateToCountry={handleNavigateToCountry}
           onNavigateToPartners={handleNavigatePartners}
-          onOpenCounseling={(notes) => handleOpenCounseling(undefined, notes)}
+          onOpenCounseling={() => handleNavigateContact()}
           onOpenSearch={() => setIsSearchOpen(true)}
           onOpenLogin={() => setIsAuthOpen(true)}
         />
@@ -534,7 +552,7 @@ export default function App() {
           onNavigateSection={handleNavigateSectionFromCountry}
           onNavigateToCountry={handleNavigateToCountry}
           onNavigateToAffiliate={handleNavigateAffiliate}
-          onOpenCounseling={(notes) => handleOpenCounseling(undefined, notes)}
+          onOpenCounseling={() => handleNavigateContact()}
           onOpenSearch={() => setIsSearchOpen(true)}
           onOpenLogin={() => setIsAuthOpen(true)}
         />
@@ -545,7 +563,7 @@ export default function App() {
           onNavigateToCountry={handleNavigateToCountry}
           onNavigateToAffiliate={handleNavigateAffiliate}
           onNavigateToPartners={handleNavigatePartners}
-          onOpenCounseling={(notes) => handleOpenCounseling(undefined, notes)}
+          onOpenCounseling={() => handleNavigateContact()}
           onOpenSearch={() => setIsSearchOpen(true)}
           onOpenLogin={() => setIsAuthOpen(true)}
           onViewCourses={() => setIsLiveClassesOpen(true)}
@@ -559,7 +577,9 @@ export default function App() {
           onNavigateToAffiliate={handleNavigateAffiliate}
           onNavigateToPartners={handleNavigatePartners}
           onNavigateIeltsRoadmap={handleNavigateIeltsRoadmap}
-          onOpenCounseling={(notes) => handleOpenCounseling(undefined, notes)}
+          onNavigateAbout={handleNavigateAbout}
+          onNavigateContact={handleNavigateContact}
+          onOpenCounseling={() => handleNavigateContact()}
           onOpenSearch={() => setIsSearchOpen(true)}
           onOpenLogin={() => setIsAuthOpen(true)}
         />
@@ -571,7 +591,8 @@ export default function App() {
           onNavigateToAffiliate={handleNavigateAffiliate}
           onNavigateToPartners={handleNavigatePartners}
           onNavigateBlog={handleNavigateBlog}
-          onOpenCounseling={(notes) => handleOpenCounseling(undefined, notes)}
+          onNavigateContact={handleNavigateContact}
+          onOpenCounseling={() => handleNavigateContact()}
           onOpenSearch={() => setIsSearchOpen(true)}
           onOpenLogin={() => setIsAuthOpen(true)}
         />
@@ -602,7 +623,7 @@ export default function App() {
             setSelectedCourseEligibility(course);
             setIsEligibilityOpen(true);
           }}
-          onWatchVideos={() => setIsLiveClassesOpen(true)}
+          onWatchVideos={() => window.open('https://www.youtube.com/@Biddaloi', '_blank', 'noopener,noreferrer')}
           onNavigateAffiliate={handleNavigateAffiliate}
           onNavigatePartners={handleNavigatePartners}
           onNavigateBlog={handleNavigateBlog}

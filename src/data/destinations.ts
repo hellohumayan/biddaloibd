@@ -3,7 +3,7 @@ import { Destination } from '../types';
 export const destinationsData: Destination[] = [
   {
     id: 'usa',
-    name: 'United States',
+    name: 'USA',
     flag: '🇺🇸',
     code: 'USA',
     heroImage: 'https://flagcdn.com/w640/us.png',
@@ -15,6 +15,21 @@ export const destinationsData: Destination[] = [
     workPermit: 'Up to 3 Years STEM OPT',
     universityCount: 255,
     featuredUnis: ['University of Texas at Arlington', 'Arizona State University', 'George Mason University', 'SUNY Buffalo']
+  },
+  {
+    id: 'uk',
+    name: 'UK',
+    flag: '🇬🇧',
+    code: 'UK',
+    heroImage: 'https://flagcdn.com/w640/gb.png',
+    flagImage: 'https://flagcdn.com/w640/gb.png',
+    shortDesc: 'Intensive 1-year Master’s degrees, prestigious Russell Group heritage, and 2-year Graduate Route post-study work visa.',
+    popularFor: '1-Year Master’s, Data Science, Fintech & Law',
+    avgTuition: '£13,000 - £26,000 / yr',
+    avgLiving: '£9,000 - £13,000 / yr',
+    workPermit: '2 Years Graduate Route',
+    universityCount: 38,
+    featuredUnis: ['Coventry University', 'University of Hertfordshire', 'UWE Bristol', 'University of Greenwich']
   },
   {
     id: 'canada',
@@ -32,21 +47,6 @@ export const destinationsData: Destination[] = [
     featuredUnis: ['University of Windsor', 'York University', 'Concordia University', 'Memorial University']
   },
   {
-    id: 'uk',
-    name: 'United Kingdom',
-    flag: '🇬🇧',
-    code: 'UK',
-    heroImage: 'https://flagcdn.com/w640/gb.png',
-    flagImage: 'https://flagcdn.com/w640/gb.png',
-    shortDesc: 'Intensive 1-year Master’s degrees, prestigious Russell Group heritage, and 2-year Graduate Route post-study work visa.',
-    popularFor: '1-Year Master’s, Data Science, Fintech & Law',
-    avgTuition: '£13,000 - £26,000 / yr',
-    avgLiving: '£9,000 - £13,000 / yr',
-    workPermit: '2 Years Graduate Route',
-    universityCount: 38,
-    featuredUnis: ['Coventry University', 'University of Hertfordshire', 'UWE Bristol', 'University of Greenwich']
-  },
-  {
     id: 'australia',
     name: 'Australia',
     flag: '🇦🇺',
@@ -62,21 +62,6 @@ export const destinationsData: Destination[] = [
     featuredUnis: ['Deakin University', 'La Trobe University', 'University of Wollongong', 'Curtin University']
   },
   {
-    id: 'germany',
-    name: 'Germany & Europe',
-    flag: '🇩🇪',
-    code: 'EUR',
-    heroImage: 'https://flagcdn.com/w640/de.png',
-    flagImage: 'https://flagcdn.com/w640/de.png',
-    shortDesc: 'Zero or nominal tuition fees at public universities, world capital for engineering & automotive, and 18-month job seeker visa.',
-    popularFor: 'Tuition-Free Programs, Automotive, Mechanical & CS',
-    avgTuition: '€0 - €3,000 / yr (Public)',
-    avgLiving: '€11,208 / yr (Blocked Account)',
-    workPermit: '18 Months Job Seeking Visa',
-    universityCount: 22,
-    featuredUnis: ['IU International University', 'SRH Berlin', 'Gisma University', 'EU Business School']
-  },
-  {
     id: 'malaysia',
     name: 'Malaysia',
     flag: '🇲🇾',
@@ -88,23 +73,8 @@ export const destinationsData: Destination[] = [
     avgTuition: '$4,000 - $9,000 / yr',
     avgLiving: '$3,500 - $5,500 / yr',
     workPermit: 'Internship & Talent Corp pathways',
-    universityCount: 18,
+    universityCount: 24,
     featuredUnis: ['Taylor’s University', 'UCSI University', 'Asia Pacific University (APU)', 'Sunway University']
-  },
-  {
-    id: 'uae',
-    name: 'United Arab Emirates',
-    flag: '🇦🇪',
-    code: 'UAE',
-    heroImage: 'https://flagcdn.com/w640/ae.png',
-    flagImage: 'https://flagcdn.com/w640/ae.png',
-    shortDesc: 'Tax-free global commerce hub in Dubai, top international university campuses, and emerging Golden Visa student programs.',
-    popularFor: 'Global Business, Aviation, AI & Digital Marketing',
-    avgTuition: 'AED 38,000 - 75,000 / yr',
-    avgLiving: 'AED 30,000 - 45,000 / yr',
-    workPermit: 'Direct Employment Visa Sponsorship',
-    universityCount: 12,
-    featuredUnis: ['Middlesex University Dubai', 'Heriot-Watt University Dubai', 'University of Wollongong Dubai']
   },
   {
     id: 'india',
@@ -118,7 +88,52 @@ export const destinationsData: Destination[] = [
     avgTuition: '$2,000 - $6,000 / yr',
     avgLiving: '$1,800 - $3,000 / yr',
     workPermit: 'Corporate Placement & Regional Hubs',
-    universityCount: 15,
+    universityCount: 28,
     featuredUnis: ['Sharda University', 'Lovely Professional University', 'Chandigarh University', 'SRM Institute']
+  },
+  {
+    id: 'uae',
+    name: 'UAE',
+    flag: '🇦🇪',
+    code: 'UAE',
+    heroImage: 'https://flagcdn.com/w640/ae.png',
+    flagImage: 'https://flagcdn.com/w640/ae.png',
+    shortDesc: 'Tax-free global commerce hub in Dubai, top international university campuses, and emerging Golden Visa student programs.',
+    popularFor: 'Global Business, Aviation, AI & Digital Marketing',
+    avgTuition: 'AED 38,000 - 75,000 / yr',
+    avgLiving: 'AED 30,000 - 45,000 / yr',
+    workPermit: 'Direct Employment Visa Sponsorship',
+    universityCount: 16,
+    featuredUnis: ['Middlesex University Dubai', 'Heriot-Watt University Dubai', 'University of Wollongong Dubai', 'Murdoch Dubai']
+  },
+  {
+    id: 'china',
+    name: 'China',
+    flag: '🇨🇳',
+    code: 'CHN',
+    heroImage: 'https://flagcdn.com/w640/cn.png',
+    flagImage: 'https://flagcdn.com/w640/cn.png',
+    shortDesc: 'World-class research universities with prestigious CSC Government Scholarships, English-medium MBBS, and modern high-tech campuses.',
+    popularFor: 'Clinical Medicine (MBBS), Computer Science, Civil Engineering & AI',
+    avgTuition: '$2,500 - $6,000 / yr',
+    avgLiving: '$2,000 - $3,800 / yr',
+    workPermit: 'Post-Graduation Internship & Work Visas',
+    universityCount: 32,
+    featuredUnis: ['Zhejiang University', 'Tsinghua University', 'Nanjing University', 'Jiangsu University']
+  },
+  {
+    id: 'europe',
+    name: 'Europe',
+    flag: '🇪🇺',
+    code: 'EUR',
+    heroImage: 'https://flagcdn.com/w640/eu.png',
+    flagImage: 'https://flagcdn.com/w640/eu.png',
+    shortDesc: 'Zero or nominal tuition fees at public universities across Germany & Schengen, world engineering hubs, and 18-month job seeker visas.',
+    popularFor: 'Tuition-Free Programs, Automotive, Sustainable Tech & CS',
+    avgTuition: '€0 - €3,500 / yr (Public & Subsidized)',
+    avgLiving: '€9,000 - €11,500 / yr',
+    workPermit: '18 Months Job Seeking Visa',
+    universityCount: 35,
+    featuredUnis: ['Technical University of Munich', 'IU International University', 'SRH Berlin', 'Gisma University']
   }
 ];

@@ -112,14 +112,14 @@ const ENQUIRY_TYPES = [
 ];
 
 const STUDY_DESTINATIONS = [
-  'India',
-  'United States',
+  'USA',
+  'UK',
   'Canada',
-  'United Kingdom',
   'Australia',
-  'New Zealand',
   'Malaysia',
-  'United Arab Emirates',
+  'India',
+  'UAE',
+  'China',
   'Europe',
   'Not Sure',
   'Other'
@@ -503,11 +503,15 @@ export const ContactPage: React.FC<ContactPageProps> = ({
       <Navbar
         onOpenSearch={onOpenSearch}
         onOpenLogin={onOpenLogin}
-        onOpenCounseling={() => onOpenCounseling('Contact Page Navigation')}
+        onOpenCounseling={scrollToForm}
         onNavigateSection={onNavigateSection}
         onNavigateToCountry={onNavigateToCountry}
         onNavigateAffiliate={onNavigateToAffiliate}
         onNavigatePartners={onNavigateToPartners}
+        onNavigateHome={onNavigateHome}
+        onNavigateBlog={onNavigateBlog}
+        onNavigateAbout={() => onNavigateSection('about')}
+        onNavigateContact={scrollToForm}
       />
 
       {/* Main Content Body */}

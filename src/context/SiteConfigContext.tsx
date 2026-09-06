@@ -3,7 +3,7 @@ import { SiteConfig, ServiceItemConfig } from '../types/siteConfig';
 import { destinationsData } from '../data/destinations';
 import { testimonialsData } from '../data/testimonials';
 
-const STORAGE_KEY = 'biddaloi_site_config_v1';
+const STORAGE_KEY = 'biddaloi_site_config_v2';
 
 const DEFAULT_SERVICES: ServiceItemConfig[] = [
   {
@@ -209,8 +209,8 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
   },
   countries: {
     badge: 'Global Institutional Network',
-    title: 'Countries We Are Connected With',
-    description: 'Explore verified partner universities across premier global study destinations with transparent visa guidance, tuition waivers, and post-study work permits.',
+    title: 'Countries We Work With',
+    description: 'Explore verified partner universities across USA, UK, Canada, Australia, Malaysia, India, UAE, China & Europe with transparent visa guidance, tuition waivers, and post-study work permits.',
     items: destinationsData
   },
   services: {
@@ -295,7 +295,9 @@ export const SiteConfigProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           countries: { 
             ...DEFAULT_SITE_CONFIG.countries, 
             ...(parsed.countries || {}),
-            items: parsed.countries?.items?.length ? parsed.countries.items : DEFAULT_SITE_CONFIG.countries.items
+            items: (parsed.countries?.items?.length && parsed.countries.items.some((c: any) => c.id === 'china')) 
+              ? parsed.countries.items 
+              : DEFAULT_SITE_CONFIG.countries.items
           },
           services: { 
             ...DEFAULT_SITE_CONFIG.services, 

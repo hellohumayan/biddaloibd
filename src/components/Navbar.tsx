@@ -6,11 +6,15 @@ import { destinationsData } from '../data/destinations';
 interface NavbarProps {
   onOpenSearch?: () => void;
   onOpenLogin?: () => void;
-  onOpenCounseling: () => void;
+  onOpenCounseling?: () => void;
   onNavigateSection: (sectionId: string) => void;
   onNavigateToCountry?: (countryId: string) => void;
   onNavigateAffiliate?: () => void;
   onNavigatePartners?: () => void;
+  onNavigateHome?: () => void;
+  onNavigateBlog?: (articleId?: string) => void;
+  onNavigateAbout?: () => void;
+  onNavigateContact?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -20,7 +24,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateSection,
   onNavigateToCountry,
   onNavigateAffiliate,
-  onNavigatePartners
+  onNavigatePartners,
+  onNavigateHome,
+  onNavigateBlog,
+  onNavigateAbout,
+  onNavigateContact
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -63,18 +71,52 @@ export const Navbar: React.FC<NavbarProps> = ({
     }, 150);
   };
 
+  // Header Menu items strictly: Home, Countries, Services, Blog, About, Contact
   const navLinks = [
-    { label: 'Home', target: 'hero' },
     { label: 'Services', target: 'services' },
-    { label: 'How It Works', target: 'how-it-works' },
-    { label: 'Resources', target: 'resources' },
-    { label: 'Testimonials', target: 'testimonials' }
+    { label: 'Blog', target: 'blog' },
+    { label: 'About', target: 'about' },
+    { label: 'Contact', target: 'contact' }
   ];
 
   const handleNavClick = (target: string) => {
-    onNavigateSection(target);
     setMobileMenuOpen(false);
     setIsCountriesOpen(false);
+
+    if (target === 'hero' || target === 'home') {
+      if (onNavigateHome) {
+        onNavigateHome();
+      } else {
+        onNavigateSection('hero');
+      }
+      return;
+    }
+    if (target === 'blog' || target === 'blogs') {
+      if (onNavigateBlog) {
+        onNavigateBlog();
+      } else {
+        onNavigateSection('blog');
+      }
+      return;
+    }
+    if (target === 'about' || target === 'about-us') {
+      if (onNavigateAbout) {
+        onNavigateAbout();
+      } else {
+        onNavigateSection('about');
+      }
+      return;
+    }
+    if (target === 'contact' || target === 'contact-us') {
+      if (onNavigateContact) {
+        onNavigateContact();
+      } else {
+        onNavigateSection('contact');
+      }
+      return;
+    }
+
+    onNavigateSection(target);
   };
 
   const handleCountryClick = (countryId: string) => {
@@ -84,6 +126,16 @@ export const Navbar: React.FC<NavbarProps> = ({
       onNavigateToCountry(countryId);
     } else {
       onNavigateSection('countries');
+    }
+  };
+
+  const handleApplyClick = () => {
+    setMobileMenuOpen(false);
+    setIsCountriesOpen(false);
+    if (onNavigateContact) {
+      onNavigateContact();
+    } else {
+      onNavigateSection('contact');
     }
   };
 
@@ -105,23 +157,23 @@ export const Navbar: React.FC<NavbarProps> = ({
                 e.preventDefault();
                 handleNavClick('hero');
               }}
-              className="group focus:outline-none flex items-center shrink-0"
+              className="group focus:outline-none flex items-center shrink-0 cursor-pointer"
             >
               <Logo size="md" />
             </a>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation: Home, Countries, Services, Blog, About, Contact */}
             <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
-              {/* Home */}
+              {/* 1. Home */}
               <button
                 type="button"
                 onClick={() => handleNavClick('hero')}
-                className="px-3 py-1.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-slate-50/80 rounded-lg transition-colors"
+                className="px-3 py-1.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-slate-50/80 rounded-lg transition-colors cursor-pointer"
               >
                 Home
               </button>
 
-              {/* Countries Dropdown */}
+              {/* 2. Countries Dropdown */}
               <div
                 ref={dropdownRef}
                 className="relative"
@@ -131,7 +183,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsCountriesOpen(!isCountriesOpen)}
-                  className={`px-3 py-1.5 text-sm font-bold rounded-lg transition-colors inline-flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 text-sm font-bold rounded-lg transition-colors inline-flex items-center gap-1.5 cursor-pointer ${
                     isCountriesOpen
                       ? 'text-blue-600 bg-blue-50/80'
                       : 'text-slate-800 hover:text-blue-600 hover:bg-slate-50/80'
@@ -175,23 +227,25 @@ export const Navbar: React.FC<NavbarProps> = ({
                 )}
               </div>
 
-              {/* Other navigation links */}
-              {navLinks.slice(1).map((link) => (
+              {/* 3. Services, 4. Blog, 5. About, 6. Contact */}
+              {navLinks.map((link) => (
                 <button
                   key={link.label}
+                  type="button"
                   onClick={() => handleNavClick(link.target)}
-                  className="px-3 py-1.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-slate-50/80 rounded-lg transition-colors"
+                  className="px-3 py-1.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-slate-50/80 rounded-lg transition-colors cursor-pointer"
                 >
                   {link.label}
                 </button>
               ))}
             </nav>
 
-            {/* Right CTA */}
+            {/* Right CTA Button: Replaced form link to Contact Page */}
             <div className="hidden sm:flex items-center">
               <button
-                onClick={onOpenCounseling}
-                className="inline-flex items-center gap-1.5 px-5 py-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-xs shadow-blue-500/20 transition-all transform active:scale-95"
+                type="button"
+                onClick={handleApplyClick}
+                className="inline-flex items-center gap-1.5 px-5 py-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-xs shadow-blue-500/20 transition-all transform active:scale-95 cursor-pointer"
               >
                 <span>Apply Now</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -201,8 +255,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Mobile Hamburger Button */}
             <div className="flex items-center gap-2 lg:hidden">
               <button
+                type="button"
                 onClick={() => setMobileMenuOpen(true)}
-                className="p-2 text-slate-700 hover:text-blue-600 hover:bg-slate-100 rounded-xl transition-colors"
+                className="p-2 text-slate-700 hover:text-blue-600 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
                 aria-label="Open navigation menu"
               >
                 <Menu className="w-6 h-6" />
@@ -228,30 +283,33 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="p-5 border-b border-slate-100 flex items-center justify-between">
                 <Logo size="sm" />
                 <button
+                  type="button"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+                  className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
                   aria-label="Close menu"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              {/* Drawer Nav Links */}
+              {/* Drawer Nav Links: Home, Countries, Services, Blog, About, Contact */}
               <div className="p-4 space-y-1">
-                {/* Home */}
+                {/* 1. Home */}
                 <button
+                  type="button"
                   onClick={() => handleNavClick('hero')}
-                  className="w-full text-left px-3.5 py-2.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-blue-50/50 rounded-xl transition-colors flex items-center justify-between"
+                  className="w-full text-left px-3.5 py-2.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-blue-50/50 rounded-xl transition-colors flex items-center justify-between cursor-pointer"
                 >
                   <span>Home</span>
                   <ArrowRight className="w-4 h-4 text-slate-300" />
                 </button>
 
-                {/* Countries Accordion */}
+                {/* 2. Countries Accordion */}
                 <div>
                   <button
+                    type="button"
                     onClick={() => setMobileCountriesOpen(!mobileCountriesOpen)}
-                    className="w-full text-left px-3.5 py-2.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-blue-50/50 rounded-xl transition-colors flex items-center justify-between"
+                    className="w-full text-left px-3.5 py-2.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-blue-50/50 rounded-xl transition-colors flex items-center justify-between cursor-pointer"
                   >
                     <span>Countries</span>
                     <ChevronDown
@@ -266,8 +324,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                       {destinationsData.map((country) => (
                         <button
                           key={country.id}
+                          type="button"
                           onClick={() => handleCountryClick(country.id)}
-                          className="w-full text-left px-3 py-2 text-xs font-bold text-slate-800 hover:text-blue-600 hover:bg-white rounded-lg transition-colors flex items-center gap-2.5"
+                          className="w-full text-left px-3 py-2 text-xs font-bold text-slate-800 hover:text-blue-600 hover:bg-white rounded-lg transition-colors flex items-center gap-2.5 cursor-pointer"
                         >
                           <img
                             src={country.flagImage}
@@ -283,12 +342,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                   )}
                 </div>
 
-                {/* Other Nav Links */}
-                {navLinks.slice(1).map((link) => (
+                {/* 3. Services, 4. Blog, 5. About, 6. Contact */}
+                {navLinks.map((link) => (
                   <button
                     key={link.label}
+                    type="button"
                     onClick={() => handleNavClick(link.target)}
-                    className="w-full text-left px-3.5 py-2.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-blue-50/50 rounded-xl transition-colors flex items-center justify-between"
+                    className="w-full text-left px-3.5 py-2.5 text-sm font-bold text-slate-800 hover:text-blue-600 hover:bg-blue-50/50 rounded-xl transition-colors flex items-center justify-between cursor-pointer"
                   >
                     <span>{link.label}</span>
                     <ArrowRight className="w-4 h-4 text-slate-300" />
@@ -296,14 +356,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ))}
               </div>
 
-              {/* Mobile CTA */}
+              {/* Mobile CTA Button: Replaced form link to Contact Page */}
               <div className="px-4 py-3 border-t border-slate-100 mt-2">
                 <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    onOpenCounseling();
-                  }}
-                  className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-md flex items-center justify-center gap-2"
+                  type="button"
+                  onClick={handleApplyClick}
+                  className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-md flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>Apply Now</span>
                   <ArrowRight className="w-4 h-4" />

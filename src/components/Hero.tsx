@@ -9,11 +9,12 @@ import {
 import { useSiteConfig } from '../context/SiteConfigContext';
 
 interface HeroProps {
-  onFindCourse: () => void;
+  onFindCourse?: () => void;
   onTalkCounselor: () => void;
+  onNavigateContact?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onFindCourse, onTalkCounselor }) => {
+export const Hero: React.FC<HeroProps> = ({ onFindCourse, onTalkCounselor, onNavigateContact }) => {
   const { config } = useSiteConfig();
   const hero = config.hero;
 
@@ -62,23 +63,31 @@ export const Hero: React.FC<HeroProps> = ({ onFindCourse, onTalkCounselor }) => 
 
             {/* Primary Action Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-              <button
-                type="button"
-                onClick={onFindCourse}
+              <a
+                href="https://app.coursefinder.ai/student-platform/a1cbc2c0/sign-up"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-blue-600/25 transition-all transform active:scale-95 group cursor-pointer"
               >
                 <span>{hero.primaryCtaText || 'Start Free Assessment'}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+              </a>
 
-              <button
-                type="button"
-                onClick={onTalkCounselor}
+              <a
+                href="/contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (onNavigateContact) {
+                    onNavigateContact();
+                  } else {
+                    onTalkCounselor();
+                  }
+                }}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm sm:text-base border border-slate-300/80 shadow-xs transition-all hover:border-teal-500 cursor-pointer"
               >
                 <MessageSquare className="w-4 h-4 text-teal-600" />
                 <span>{hero.secondaryCtaText || 'Talk to an Expert'}</span>
-              </button>
+              </a>
             </div>
 
           </div>
@@ -90,10 +99,11 @@ export const Hero: React.FC<HeroProps> = ({ onFindCourse, onTalkCounselor }) => 
               {/* Main Student Photo Showcase */}
               <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-100 h-[460px] sm:h-[485px] lg:h-[495px] w-full">
                 <img
-                  src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80"
-                  alt="Bangladeshi Students Celebrating Graduation Abroad"
-                  className="w-full h-full object-cover object-[center_20%]"
+                  src="https://scontent.ftpa1-1.fna.fbcdn.net/v/t39.30808-6/642238612_2343592182752733_1241414177294372060_n.jpg?stp=dst-jpg_tt6&cstp=mx1536x2048&ctp=s1536x2048&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_ohc=OwxcQBBr2lAQ7kNvwF0UKAV&_nc_oc=AdoPVOJj7WbIiRnZDpBA_PRTpaoeYExLTXwxNREROfzDLqkGPiJ51vfIU1JY04lMCbB3nFShHiuBH7KenGvjERvr&_nc_zt=23&_nc_ht=scontent.ftpa1-1.fna&_nc_gid=sCNQhGk6WEqhhEaGMFKlBA&_nc_ss=7b2a8&oh=00_AQL6CBVZm044SysK6l39J-8_r5mGcXVWeQ4ZKu9HN1dmLg&oe=6AA27E99"
+                  alt="Nusrat Jannat Srishti - University of Surrey"
+                  className="w-full h-full object-cover object-top"
                   loading="eager"
+                  referrerPolicy="no-referrer"
                 />
                 
                 {/* Subtle Gradient Overlays */}
@@ -102,8 +112,8 @@ export const Hero: React.FC<HeroProps> = ({ onFindCourse, onTalkCounselor }) => 
                 {/* Bottom Card Inside Photo */}
                 <div className="absolute bottom-3.5 left-3.5 right-3.5 p-3 bg-white/95 backdrop-blur-md rounded-2xl shadow-md border border-white/80 flex items-center justify-between">
                   <div>
-                    <p className="text-xs font-bold text-slate-900">Nusrat Jahan • University of Windsor</p>
-                    <p className="text-[11px] text-slate-500 font-medium">M.S. Applied Computing (Canada)</p>
+                    <p className="text-xs font-bold text-slate-900">Nusrat Jannat Srishti</p>
+                    <p className="text-[11px] text-slate-500 font-medium">University of Surrey , UK</p>
                   </div>
                   <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0 shadow-xs" title="Visa Approved">
                     <CheckCircle2 className="w-4 h-4" />

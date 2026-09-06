@@ -4,7 +4,11 @@ import { canadaCountryData } from './canada';
 import { ukCountryData } from './uk';
 import { australiaCountryData } from './australia';
 import { germanyCountryData } from './germany';
+import { europeCountryData } from './europe';
 import { malaysiaCountryData } from './malaysia';
+import { chinaCountryData } from './china';
+import { indiaCountryData } from './india';
+import { uaeCountryData } from './uae';
 import { swedenCountryData, finlandCountryData } from './others';
 
 export const allCountryPages: Record<string, CountryPageData> = {
@@ -13,7 +17,11 @@ export const allCountryPages: Record<string, CountryPageData> = {
   uk: ukCountryData,
   australia: australiaCountryData,
   germany: germanyCountryData,
+  europe: europeCountryData,
   malaysia: malaysiaCountryData,
+  china: chinaCountryData,
+  india: indiaCountryData,
+  uae: uaeCountryData,
   sweden: swedenCountryData,
   finland: finlandCountryData
 };
@@ -44,8 +52,27 @@ const slugMap: Record<string, string> = {
   'germany': 'germany',
   'de': 'germany',
 
+  'study-in-europe': 'europe',
+  'europe': 'europe',
+  'eur': 'europe',
+  'eu': 'europe',
+
   'study-in-malaysia': 'malaysia',
   'malaysia': 'malaysia',
+  'mys': 'malaysia',
+
+  'study-in-china': 'china',
+  'china': 'china',
+  'chn': 'china',
+
+  'study-in-india': 'india',
+  'india': 'india',
+  'ind': 'india',
+
+  'study-in-uae': 'uae',
+  'uae': 'uae',
+  'study-in-dubai': 'uae',
+  'dubai': 'uae',
 
   'study-in-sweden': 'sweden',
   'sweden': 'sweden',
@@ -53,9 +80,6 @@ const slugMap: Record<string, string> = {
   'study-in-finland': 'finland',
   'finland': 'finland',
 
-  'study-in-uae': 'malaysia', // fallback map with regional styling
-  'study-in-dubai': 'malaysia',
-  'study-in-india': 'malaysia',
   'study-in-japan': 'germany'
 };
 
@@ -67,7 +91,7 @@ export function getCountryData(param: string): CountryPageData | null {
     return allCountryPages[key];
   }
   
-  // Return USA as premier default if matched loosely
+  // Return loose matches
   if (normalized.includes('usa') || normalized.includes('america') || normalized.includes('states')) {
     return usaCountryData;
   }
@@ -80,8 +104,17 @@ export function getCountryData(param: string): CountryPageData | null {
   if (normalized.includes('austr')) {
     return australiaCountryData;
   }
-  if (normalized.includes('germ')) {
-    return germanyCountryData;
+  if (normalized.includes('china') || normalized.includes('chine')) {
+    return chinaCountryData;
+  }
+  if (normalized.includes('india') || normalized.includes('bharat')) {
+    return indiaCountryData;
+  }
+  if (normalized.includes('uae') || normalized.includes('dubai') || normalized.includes('emirates')) {
+    return uaeCountryData;
+  }
+  if (normalized.includes('europe') || normalized.includes('germ')) {
+    return europeCountryData;
   }
   if (normalized.includes('malay')) {
     return malaysiaCountryData;

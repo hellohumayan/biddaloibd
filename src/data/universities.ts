@@ -65,19 +65,19 @@ export const universitiesData: University[] = [
     id: 'iu-berlin',
     name: 'IU International University of Applied Sciences',
     shortName: 'IU Berlin',
-    country: 'Germany',
-    flag: '🇩🇪',
-    destinationId: 'germany',
+    country: 'Europe',
+    flag: '🇪🇺',
+    destinationId: 'europe',
     logo: 'https://images.unsplash.com/photo-1525921429624-479b6a26d84d?auto=format&fit=crop&w=160&h=160&q=80',
     ranking: 'Top German Applied Sciences',
-    location: 'Berlin & Bad Honnef',
+    location: 'Berlin & Bad Honnef, Germany',
     featured: true
   },
   {
     id: 'mdx-dubai',
     name: 'Middlesex University Dubai',
     shortName: 'Middlesex Dubai',
-    country: 'United Arab Emirates',
+    country: 'UAE',
     flag: '🇦🇪',
     destinationId: 'uae',
     logo: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=160&h=160&q=80',
@@ -95,6 +95,18 @@ export const universitiesData: University[] = [
     logo: 'https://images.unsplash.com/photo-1519452635265-7b1fbfd1e4e0?auto=format&fit=crop&w=160&h=160&q=80',
     ranking: 'NAAC A+ Accredited',
     location: 'Greater Noida, Delhi NCR',
+    featured: true
+  },
+  {
+    id: 'zhejiang',
+    name: 'Zhejiang University',
+    shortName: 'ZJU China',
+    country: 'China',
+    flag: '🇨🇳',
+    destinationId: 'china',
+    logo: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=160&h=160&q=80',
+    ranking: '#44 Globally (QS 2026)',
+    location: 'Hangzhou, China',
     featured: true
   }
 ];

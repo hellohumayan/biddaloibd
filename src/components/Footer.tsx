@@ -135,13 +135,14 @@ export const Footer: React.FC<FooterProps> = ({
             <ul className="space-y-2 text-xs">
               {[
                 { name: 'Study in USA', id: 'usa' },
-                { name: 'Study in Canada', id: 'canada' },
                 { name: 'Study in UK', id: 'uk' },
+                { name: 'Study in Canada', id: 'canada' },
                 { name: 'Study in Australia', id: 'australia' },
-                { name: 'Study in Germany', id: 'germany' },
                 { name: 'Study in Malaysia', id: 'malaysia' },
-                { name: 'Study in Sweden', id: 'sweden' },
-                { name: 'Study in Finland', id: 'finland' }
+                { name: 'Study in India', id: 'india' },
+                { name: 'Study in UAE', id: 'uae' },
+                { name: 'Study in China', id: 'china' },
+                { name: 'Study in Europe', id: 'europe' }
               ].map((item) => (
                 <li key={item.id}>
                   <a

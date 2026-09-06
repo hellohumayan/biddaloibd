@@ -38,6 +38,7 @@ interface AboutPageProps {
   onNavigateToAffiliate?: () => void;
   onNavigateToPartners?: () => void;
   onNavigateBlog?: (articleId?: string) => void;
+  onNavigateContact?: () => void;
   onOpenCounseling: (notes?: string) => void;
   onOpenSearch: () => void;
   onOpenLogin: () => void;
@@ -50,6 +51,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
   onNavigateToAffiliate,
   onNavigateToPartners,
   onNavigateBlog,
+  onNavigateContact,
   onOpenCounseling,
   onOpenSearch,
   onOpenLogin
@@ -91,11 +93,15 @@ export const AboutPage: React.FC<AboutPageProps> = ({
       <Navbar
         onOpenSearch={onOpenSearch}
         onOpenLogin={onOpenLogin}
-        onOpenCounseling={() => onOpenCounseling('About Page Visitor Consultation')}
+        onOpenCounseling={() => (onNavigateContact ? onNavigateContact() : onOpenCounseling('About Page Visitor Consultation'))}
         onNavigateSection={onNavigateSection}
         onNavigateToCountry={onNavigateToCountry}
         onNavigateAffiliate={onNavigateToAffiliate}
         onNavigatePartners={onNavigateToPartners}
+        onNavigateHome={onNavigateHome}
+        onNavigateBlog={onNavigateBlog}
+        onNavigateAbout={() => onNavigateSection('about')}
+        onNavigateContact={onNavigateContact}
       />
 
       {/* Main Body */}

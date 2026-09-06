@@ -27,6 +27,9 @@ interface CountryPageProps {
   onOpenLogin?: () => void;
   onNavigateAffiliate?: () => void;
   onNavigatePartners?: () => void;
+  onNavigateBlog?: (articleId?: string) => void;
+  onNavigateAbout?: () => void;
+  onNavigateContact?: () => void;
 }
 
 export const CountryPage: React.FC<CountryPageProps> = ({
@@ -38,7 +41,10 @@ export const CountryPage: React.FC<CountryPageProps> = ({
   onOpenSearch,
   onOpenLogin,
   onNavigateAffiliate,
-  onNavigatePartners
+  onNavigatePartners,
+  onNavigateBlog,
+  onNavigateAbout,
+  onNavigateContact
 }) => {
   const { config } = useSiteConfig();
 
@@ -72,11 +78,15 @@ export const CountryPage: React.FC<CountryPageProps> = ({
       <Navbar
         onOpenSearch={onOpenSearch}
         onOpenLogin={onOpenLogin}
-        onOpenCounseling={() => onOpenCounseling(`Direct Application: Study in ${country.name}`)}
+        onOpenCounseling={() => (onNavigateContact ? onNavigateContact() : onOpenCounseling(`Direct Application: Study in ${country.name}`))}
         onNavigateSection={onNavigateSection}
         onNavigateToCountry={onSelectCountrySlug}
         onNavigateAffiliate={onNavigateAffiliate}
         onNavigatePartners={onNavigatePartners}
+        onNavigateHome={onNavigateHome}
+        onNavigateBlog={onNavigateBlog}
+        onNavigateAbout={onNavigateAbout}
+        onNavigateContact={onNavigateContact}
       />
 
       {/* Main Content Body */}

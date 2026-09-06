@@ -32,6 +32,8 @@ interface BlogPageProps {
   onNavigateToAffiliate?: () => void;
   onNavigateToPartners?: () => void;
   onNavigateIeltsRoadmap?: () => void;
+  onNavigateAbout?: () => void;
+  onNavigateContact?: () => void;
   onOpenCounseling: (notes?: string) => void;
   onOpenSearch: () => void;
   onOpenLogin: () => void;
@@ -45,6 +47,8 @@ export const BlogPage: React.FC<BlogPageProps> = ({
   onNavigateToAffiliate,
   onNavigateToPartners,
   onNavigateIeltsRoadmap,
+  onNavigateAbout,
+  onNavigateContact,
   onOpenCounseling,
   onOpenSearch,
   onOpenLogin
@@ -193,11 +197,15 @@ export const BlogPage: React.FC<BlogPageProps> = ({
       <Navbar
         onOpenSearch={onOpenSearch}
         onOpenLogin={onOpenLogin}
-        onOpenCounseling={() => onOpenCounseling('Blog Visitor Consultation')}
+        onOpenCounseling={() => (onNavigateContact ? onNavigateContact() : onOpenCounseling('Blog Visitor Consultation'))}
         onNavigateSection={onNavigateSection}
         onNavigateToCountry={onNavigateToCountry}
         onNavigateAffiliate={onNavigateToAffiliate}
         onNavigatePartners={onNavigateToPartners}
+        onNavigateHome={onNavigateHome}
+        onNavigateBlog={() => handleBackToArticles()}
+        onNavigateAbout={onNavigateAbout}
+        onNavigateContact={onNavigateContact}
       />
 
       {/* Main Body */}

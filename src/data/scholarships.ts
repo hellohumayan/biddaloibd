@@ -84,5 +84,47 @@ export const scholarshipsData: Scholarship[] = [
     deadline: 'August 1, 2025',
     badge: 'Government Supported',
     destinationId: 'india'
+  },
+  {
+    id: 'sch-7',
+    name: 'Chinese Government Scholarship (CSC)',
+    university: 'Tsinghua & Zhejiang University',
+    country: 'China',
+    flag: '🇨🇳',
+    level: "Master's & PhD",
+    amount: '100% Full Ride + Monthly Stipend',
+    coverage: 'Full Tuition, Free Campus Housing, RMB 3,000 - 3,500/mo Cash Stipend',
+    eligibility: 'Bangladeshi graduates with Bachelor’s CGPA 3.2+ and strong research proposal',
+    deadline: 'April 30, 2025',
+    badge: 'Full Ride + Stipend',
+    destinationId: 'china'
+  },
+  {
+    id: 'sch-8',
+    name: 'DAAD & European State Tuition-Free Grant',
+    university: 'Public Universities in Germany & Europe',
+    country: 'Europe',
+    flag: '🇪🇺',
+    level: "Master's & Research",
+    amount: '100% Tuition-Free Public Higher Education',
+    coverage: 'Zero tuition fees + eligibility for €934/mo DAAD living allowance',
+    eligibility: 'Meritorious academic background with Bachelor CGPA 3.0+',
+    deadline: 'October 15, 2025',
+    badge: '100% Free Tuition',
+    destinationId: 'europe'
+  },
+  {
+    id: 'sch-9',
+    name: 'Dubai International Academic Excellence Grant',
+    university: 'Middlesex & Heriot-Watt Dubai',
+    country: 'UAE',
+    flag: '🇦🇪',
+    level: "Bachelor's & Master's",
+    amount: 'Up to 30% - 50% Tuition Reduction',
+    coverage: 'Direct deduction from annual tuition fees',
+    eligibility: 'HSC GPA 4.0+ or Bachelor’s CGPA 3.0+',
+    deadline: 'August 15, 2025',
+    badge: 'Merit Award',
+    destinationId: 'uae'
   }
 ];

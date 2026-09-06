@@ -18,12 +18,14 @@ interface ConnectedCountriesProps {
   onSelectCountry: (countryId: string) => void;
   onOpenCounseling: (countryId?: string) => void;
   onNavigateToCountry?: (countryId: string) => void;
+  onNavigateContact?: () => void;
 }
 
 export const ConnectedCountries: React.FC<ConnectedCountriesProps> = ({
   onSelectCountry,
   onOpenCounseling,
-  onNavigateToCountry
+  onNavigateToCountry,
+  onNavigateContact
 }) => {
   const { config } = useSiteConfig();
   const countriesConfig = config.countries;
@@ -42,15 +44,15 @@ export const ConnectedCountries: React.FC<ConnectedCountriesProps> = ({
             <span>{countriesConfig.badge || 'Global Institutional Network'}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            {countriesConfig.title || 'Countries We Are Connected With'}
+            {countriesConfig.title || 'Countries We Work With'}
           </h2>
           <p className="text-slate-600 mt-3 text-base sm:text-lg leading-relaxed">
             {countriesConfig.description}
           </p>
         </div>
 
-        {/* Country Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Country Grid - 3x3 layout for 9 countries */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
           {countriesList.map((country) => (
             <div
               key={country.id}
@@ -153,13 +155,21 @@ export const ConnectedCountries: React.FC<ConnectedCountriesProps> = ({
               </p>
             </div>
           </div>
-          <button
-            onClick={() => onOpenCounseling()}
-            className="w-full md:w-auto px-6 py-3 rounded-xl bg-white hover:bg-slate-100 text-blue-900 font-bold text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 flex-shrink-0"
+          <a
+            href="/contact"
+            onClick={(e) => {
+              e.preventDefault();
+              if (onNavigateContact) {
+                onNavigateContact();
+              } else {
+                onOpenCounseling();
+              }
+            }}
+            className="w-full md:w-auto px-6 py-3 rounded-xl bg-white hover:bg-slate-100 text-blue-900 font-bold text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 flex-shrink-0 cursor-pointer"
           >
             <MessageSquare className="w-4 h-4 text-blue-700" />
             <span>Talk With Expert</span>
-          </button>
+          </a>
         </div>
 
       </div>

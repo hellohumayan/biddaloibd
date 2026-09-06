@@ -10,10 +10,10 @@ export const DestinationsSection: React.FC<DestinationsSectionProps> = ({ onSele
   const [activeRegion, setActiveRegion] = useState<string>('all');
 
   const regionTabs = [
-    { id: 'all', label: 'All Countries (8)' },
+    { id: 'all', label: 'All Countries (9)' },
     { id: 'na', label: 'North America (USA, Canada)' },
-    { id: 'eu', label: 'Europe & UK (UK, Germany)' },
-    { id: 'apac', label: 'Asia & Pacific (Australia, Malaysia, UAE, India)' },
+    { id: 'eu', label: 'Europe & UK (UK, Europe)' },
+    { id: 'apac', label: 'Asia & Pacific (Australia, Malaysia, India, UAE, China)' },
   ];
 
   const filteredDestinations = useMemo(() => {
@@ -21,10 +21,10 @@ export const DestinationsSection: React.FC<DestinationsSectionProps> = ({ onSele
       return destinationsData.filter(d => ['usa', 'canada'].includes(d.id));
     }
     if (activeRegion === 'eu') {
-      return destinationsData.filter(d => ['uk', 'germany'].includes(d.id));
+      return destinationsData.filter(d => ['uk', 'europe', 'germany'].includes(d.id));
     }
     if (activeRegion === 'apac') {
-      return destinationsData.filter(d => ['australia', 'malaysia', 'uae', 'india'].includes(d.id));
+      return destinationsData.filter(d => ['australia', 'malaysia', 'india', 'uae', 'china'].includes(d.id));
     }
     return destinationsData;
   }, [activeRegion]);
@@ -66,8 +66,8 @@ export const DestinationsSection: React.FC<DestinationsSectionProps> = ({ onSele
           </div>
         </div>
 
-        {/* Editorial Destination Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Editorial Destination Cards Grid (3x3 for 9 countries) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredDestinations.map((dest) => (
             <div
               key={dest.id}

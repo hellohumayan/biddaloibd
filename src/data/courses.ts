@@ -138,9 +138,9 @@ export const coursesData: Course[] = [
     universityId: 'iu-berlin',
     universityName: 'IU International University',
     universityLogo: 'https://images.unsplash.com/photo-1525921429624-479b6a26d84d?auto=format&fit=crop&w=160&h=160&q=80',
-    country: 'Germany',
-    flag: '🇩🇪',
-    destinationId: 'germany',
+    country: 'Europe',
+    flag: '🇪🇺',
+    destinationId: 'europe',
     level: "Master's",
     duration: '1.5 - 2 Years',
     intake: 'October 2025 / April 2026',
@@ -164,7 +164,7 @@ export const coursesData: Course[] = [
     universityId: 'mdx-dubai',
     universityName: 'Middlesex University Dubai',
     universityLogo: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=160&h=160&q=80',
-    country: 'United Arab Emirates',
+    country: 'UAE',
     flag: '🇦🇪',
     destinationId: 'uae',
     level: "Master's",
@@ -208,6 +208,32 @@ export const coursesData: Course[] = [
       minGpa: 'HSC GPA 3.5+ with Math & Physics',
       ielts: 'Not Mandatory with English background',
       deadline: 'August 15, 2025'
+    }
+  },
+  {
+    id: 'course-9',
+    title: 'B.Eng. in Computer Science & Technology',
+    universityId: 'zhejiang',
+    universityName: 'Zhejiang University',
+    universityLogo: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=160&h=160&q=80',
+    country: 'China',
+    flag: '🇨🇳',
+    destinationId: 'china',
+    level: "Bachelor's",
+    duration: '4 Years Full-Time',
+    intake: 'September 2025',
+    tuitionUsd: 4200,
+    tuitionBdt: '৳ 5,00,000 / yr',
+    scholarshipAvailable: 'CSC & University Full / Partial Scholarship',
+    scholarshipPercentMax: 100,
+    englishRequirement: 'IELTS 6.0 / MOI Certificate',
+    category: 'Computer Science & AI',
+    overview: 'English-medium computer science program at top-ranked Zhejiang University with cutting-edge AI labs and CSC scholarship availability.',
+    careerProspects: ['Software Engineer', 'AI Research Scientist', 'System Architect', 'Data Engineer'],
+    requirements: {
+      minGpa: 'HSC GPA 4.0+ out of 5.0 with Math & Physics',
+      ielts: '6.0 or verified English instruction certificate',
+      deadline: 'May 30, 2025'
     }
   }
 ];

@@ -14,7 +14,7 @@ import { useSiteConfig } from '../context/SiteConfigContext';
 
 interface HowItWorksProps {
   onStartJourney: () => void;
-  onWatchVideos: () => void;
+  onWatchVideos?: () => void;
 }
 
 const stepIcons = [MessageSquare, Send, ShieldCheck, Plane];
@@ -109,13 +109,6 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onStartJourney, onWatchV
               <Tv className="w-6 h-6 text-amber-300 animate-pulse" />
             </div>
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-500 text-white text-[10px] font-extrabold uppercase tracking-wider">
-                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
-                  {cta?.badge || 'Live Masterclasses'}
-                </span>
-                <span className="text-blue-200 text-xs font-semibold">• {cta?.subtext || '100% Free Learning'}</span>
-              </div>
               <h4 className="text-lg sm:text-xl font-bold">
                 {cta?.title || 'Watch Live Classes for Learning & Guidance'}
               </h4>
@@ -124,13 +117,15 @@ export const HowItWorks: React.FC<HowItWorksProps> = ({ onStartJourney, onWatchV
               </p>
             </div>
           </div>
-          <button
-            onClick={onWatchVideos}
+          <a
+            href="https://www.youtube.com/@Biddaloi"
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-full md:w-auto px-6 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-blue-900 font-bold text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2.5 flex-shrink-0 cursor-pointer group"
           >
             <Play className="w-4 h-4 text-red-600 fill-current" />
             <span>{cta?.buttonText || 'Watch Videos'}</span>
-          </button>
+          </a>
         </div>
 
       </div>
